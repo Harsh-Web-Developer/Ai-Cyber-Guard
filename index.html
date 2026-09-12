@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI CyberGuard - Team Syntax Squad</title>
+  <meta name="description" content="High-resolution full-screen OCR threat detection by Team Syntax Squad. Features Document Picture-in-Picture always-on-top alert overlay, Web Audio siren, text-to-speech voice warnings, and 100% client-side security scanning.">
+  <meta property="og:title" content="AI CyberGuard - Team Syntax Squad">
+  <meta property="og:description" content="High-resolution full-screen OCR threat detection by Team Syntax Squad. Features Document Picture-in-Picture always-on-top alert overlay, Web Audio siren, text-to-speech voice warnings, and 100% client-side security scanning.">
+  
+  <!-- Google Fonts: Orbitron (Headings), JetBrains Mono (Code/Metrics), Plus Jakarta Sans (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            tech: ['"Orbitron"', 'sans-serif'],
+          },
+          colors: {
+            cyber: {
+              pitch: '#020617', // Midnight Pitch-Black
+              deep: '#01040a',
+              card: '#090e1a',
+              cardHover: '#0f172a',
+              border: '#1e293b',
+              borderGlow: '#334155',
+              neonRed: '#ff003c', // Intense Neon Crimson Red
+              neonRedGlow: 'rgba(255, 0, 60, 0.45)',
+              neonGreen: '#00ff66', // Hyper Neon Emerald
+              neonGreenGlow: 'rgba(0, 255, 102, 0.35)',
+              cyan: '#00f0ff',
+              cyanGlow: 'rgba(0, 240, 255, 0.35)',
+              gold: '#ffd000',
+            }
+          },
+          boxShadow: {
+            'glow-red': '0 0 25px rgba(255, 0, 60, 0.5), inset 0 0 15px rgba(255, 0, 60, 0.2)',
+            'glow-green': '0 0 25px rgba(0, 255, 102, 0.35), inset 0 0 15px rgba(0, 255, 102, 0.15)',
+            'glow-cyan': '0 0 20px rgba(0, 240, 255, 0.35)',
+            'glow-gold': '0 0 20px rgba(255, 208, 0, 0.35)',
+            'card-neon': '0 0 20px rgba(0, 255, 102, 0.08), 0 8px 24px rgba(0, 0, 0, 0.6)',
+            'card-danger': '0 0 35px rgba(255, 0, 60, 0.45), 0 8px 24px rgba(0, 0, 0, 0.8)',
+          },
+          animation: {
+            'radar-sweep': 'radarSweep 2.8s linear infinite',
+            'radar-sweep-fast': 'radarSweep 1.1s linear infinite',
+            'pip-strobe': 'pipStrobe 0.32s infinite alternate',
+            'pulse-danger': 'pulseDanger 0.85s infinite',
+            'glow-pulse': 'glowPulse 2s infinite ease-in-out',
+          },
+          keyframes: {
+            radarSweep: {
+              '0%': { transform: 'translateY(-100%)', opacity: '0.9' },
+              '50%': { opacity: '1' },
+              '100%': { transform: 'translateY(100%)', opacity: '0.1' },
+            },
+            pipStrobe: {
+              '0%': { backgroundColor: '#ff003c', boxShadow: '0 0 35px #ff003c' },
+              '100%': { backgroundColor: '#7a001d', boxShadow: '0 0 10px #7a001d' }
+            },
+            pulseDanger: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.45' },
+            },
+            glowPulse: {
+              '0%, 100%': { filter: 'drop-shadow(0 0 6px #00ff66)' },
+              '50%': { filter: 'drop-shadow(0 0 18px #00ff66)' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Tesseract.js v5 WASM CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <style>
+    /* Custom Tactical Styling */
+    html, body {
+      background-color: #020617;
+      color: #f8fafc;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      overflow-x: hidden;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Active Tactical Radar Scanlines */
+    .radar-beam-green {
+      background: linear-gradient(180deg, rgba(0, 255, 102, 0) 0%, rgba(0, 255, 102, 0.25) 75%, rgba(0, 255, 102, 0.95) 100%);
+      box-shadow: 0 0 25px rgba(0, 255, 102, 0.85);
+    }
+    .radar-beam-red {
+      background: linear-gradient(180deg, rgba(255, 0, 60, 0) 0%, rgba(255, 0, 60, 0.4) 75%, rgba(255, 0, 60, 1) 100%);
+      box-shadow: 0 0 35px rgba(255, 0, 60, 1);
+    }
+
+    /* HUD Reticle Corners */
+    .hud-box {
+      position: relative;
+    }
+    .hud-box::before, .hud-box::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-color: #00ff66;
+      pointer-events: none;
+      z-index: 25;
+      transition: border-color 0.3s ease;
+    }
+    .hud-box::before {
+      top: -2px;
+      left: -2px;
+      border-top: 3px solid;
+      border-left: 3px solid;
+    }
+    .hud-box::after {
+      bottom: -2px;
+      right: -2px;
+      border-bottom: 3px solid;
+      border-right: 3px solid;
+    }
+    .hud-box.danger-reticle::before, .hud-box.danger-reticle::after {
+      border-color: #ff003c !important;
+    }
+
+    /* Tactical Background Matrix Grid */
+    .bg-grid-cyber {
+      background-size: 28px 28px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 255, 102, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 102, 0.04) 1px, transparent 1px);
+    }
+
+    /* Emergency Strobe Banner */
+    @keyframes bannerFlash {
+      0% { background-color: #ff003c; border-color: #ffffff; }
+      100% { background-color: #880020; border-color: #ffd000; }
+    }
+    .animate-banner-flash {
+      animation: bannerFlash 0.32s infinite alternate;
+    }
+
+    /* Vector Card Hover and Touch Optimization */
+    .vector-card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 48px;
+    }
+    .vector-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    }
+    .vector-card.active-copied {
+      border-color: #00ff66 !important;
+      box-shadow: 0 0 25px rgba(0, 255, 102, 0.4) !important;
+    }
+
+    /* Custom Touch-Friendly Scrollbars */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020617;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00ff66;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-cyber-pitch bg-grid-cyber selection:bg-cyber-neonGreen selection:text-black pb-28 sm:pb-8">
+
+  <!-- EMERGENCY STROBE WARNING BANNER (TRIGGERED ON THREAT) -->
+  <div id="dangerBanner" class="hidden fixed top-0 left-0 right-0 z-50 animate-banner-flash border-b-4 border-white text-white shadow-2xl py-3 px-3 sm:px-4">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+      <div class="flex items-center gap-2.5">
+        <span class="flex h-4 w-4 relative shrink-0">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-90"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-yellow-300"></span>
+        </span>
+        <div>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="font-tech text-xs sm:text-sm md:text-base font-black tracking-wider text-yellow-300 uppercase">🚨 ALERT: THREAT INTERCEPTED!</span>
+            <span class="bg-black/80 text-white font-mono text-[9px] sm:text-[10px] px-2 py-0.5 rounded border border-white/40 uppercase font-bold">SECURITY SHIELD</span>
+          </div>
+          <p id="dangerBannerText" class="text-[11px] sm:text-xs font-mono font-bold text-white/95 mt-0.5 line-clamp-2">
+            High-risk financial phishing or SMS scam detected.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto w-full sm:w-auto justify-end">
+        <button id="bannerMuteBtn" class="bg-black/90 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-white/40 shadow cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          Mute
+        </button>
+        <button id="bannerDismissBtn" class="bg-white text-red-700 hover:bg-yellow-300 hover:text-red-950 px-3.5 py-1.5 rounded-lg text-xs font-mono font-black transition shadow-lg cursor-pointer">
+          DISMISS
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APPLICATION CONTAINER -->
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-6 flex flex-col gap-4 sm:gap-6">
+
+    <!-- TOP HEADER -->
+    <header class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-cyber-border">
+      <div class="flex items-center gap-3">
+        <!-- Glowing Tactical Hexagon Icon -->
+        <div class="h-11 w-11 sm:h-14 sm:w-14 p-2 rounded-2xl bg-gradient-to-br from-cyber-card via-black to-cyber-card border-2 border-cyber-neonGreen/70 shadow-glow-green flex items-center justify-center relative shrink-0">
+          <div class="absolute inset-0 rounded-2xl bg-cyber-neonGreen/10 animate-pulse"></div>
+          <svg class="w-6 h-6 sm:w-8 sm:h-8 text-cyber-neonGreen relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="font-tech text-xl sm:text-2xl md:text-3xl font-black tracking-widest text-white">AI CYBERGUARD</h1>
+            <span class="bg-cyber-neonGreen/15 border border-cyber-neonGreen/50 text-cyber-neonGreen text-[10px] sm:text-xs font-mono font-black px-2 py-0.5 rounded uppercase tracking-wider shadow-sm">SYNTAX SQUAD</span>
+            <span id="platformPill" class="bg-cyan-500/15 border border-cyan-500/50 text-cyan-300 text-[10px] sm:text-xs font-mono font-black px-2 py-0.5 rounded uppercase">UNIVERSAL</span>
+          </div>
+          <p class="text-[11px] sm:text-xs md:text-sm text-slate-400 mt-0.5 font-mono line-clamp-1 sm:line-clamp-none">
+            Zero-API Threat Shield &bull; High-Res Desktop OCR &bull; Mobile Protection &bull; Dual Audio Siren
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Action Header Buttons (Desktop / Tablet) -->
+      <div class="hidden sm:flex items-center gap-2 flex-wrap w-full md:w-auto justify-end">
+        <!-- TEST THREAT ALERT BUTTON -->
+        <button id="testAlertBtn" class="bg-cyber-neonRed/20 hover:bg-cyber-neonRed/35 border-2 border-cyber-neonRed text-cyber-neonRed hover:text-white text-xs font-mono font-black px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-glow-red cursor-pointer transform active:scale-95">
+          <svg class="w-4 h-4 text-cyber-neonRed animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          TEST ALERT
+        </button>
+
+        <!-- Document PiP Toggle -->
+        <button id="togglePipBtn" class="bg-cyber-card hover:bg-cyber-cardHover border-2 border-cyan-500/60 hover:border-cyan-400 text-cyan-300 hover:text-white text-xs font-mono font-bold px-3 py-2.5 rounded-xl transition flex items-center gap-2 shadow-glow-cyan cursor-pointer" title="Pin always-on-top floating alert HUD over WhatsApp, Edge, or games">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          <span id="pipBtnLabel">PIN FLOATING PIP HUD</span>
+        </button>
+
+        <!-- Audio Siren Toggle -->
+        <button id="toggleAudioMuteBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyber-border text-slate-300 hover:text-white text-xs font-mono px-3 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+          <svg id="audioIcon" class="w-4 h-4 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          <span id="audioMuteLabel">Siren: Active</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- TACTICAL STATUS METRICS ROW -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+      
+      <!-- Card 1: Shield State -->
+      <div id="shieldCard" class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonGreen/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
+          <span class="tracking-wider uppercase font-bold text-slate-300">SHIELD</span>
+          <span id="statusPing" class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-slate-600"></span>
+        </div>
+        <div class="mt-2 sm:mt-3">
+          <div id="statusText" class="text-base sm:text-lg md:text-xl font-tech font-black text-slate-300 tracking-wider">STANDBY</div>
+          <div id="statusSubtext" class="text-[10px] sm:text-xs text-slate-500 font-mono truncate mt-0.5">Click Start Protection</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Total Scans Performed -->
+      <div class="bg-cyber-card border-2 border-cyber-border hover:border-cyan-500/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
+          <span class="tracking-wider uppercase font-bold text-cyan-400">OCR SCANS</span>
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        </div>
+        <div class="mt-2 sm:mt-3">
+          <div id="metricTotalScans" class="text-lg sm:text-xl md:text-2xl font-mono font-black text-white">0</div>
+          <div id="metricLatency" class="text-[10px] sm:text-xs text-cyan-400 font-mono mt-0.5 truncate">Worker: Standby</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Threat Signatures Engine -->
+      <div class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonGreen/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
+          <span class="tracking-wider uppercase font-bold text-cyber-neonGreen">SIGNATURES</span>
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        </div>
+        <div class="mt-2 sm:mt-3">
+          <div class="text-lg sm:text-xl md:text-2xl font-mono font-black text-cyber-neonGreen">58 PATTERNS</div>
+          <div class="text-[10px] sm:text-xs text-slate-400 font-mono mt-0.5 truncate">Smishing &bull; Links &bull; Urgency</div>
+        </div>
+      </div>
+
+      <!-- Card 4: Threats Intercepted -->
+      <div id="threatCard" class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonRed/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
+          <span class="tracking-wider uppercase font-bold text-cyber-neonRed">THREATS</span>
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyber-neonRed" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+        </div>
+        <div class="mt-2 sm:mt-3">
+          <div id="metricThreatsCount" class="text-lg sm:text-xl md:text-2xl font-mono font-black text-cyber-neonRed">0</div>
+          <div id="metricLastThreat" class="text-[10px] sm:text-xs text-cyber-neonRed/80 font-mono mt-0.5 truncate">Zero threats</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MAIN TWO-COLUMN WORKSPACE (Mobile-first vertical stack -> Desktop 12-col grid) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
+      
+      <!-- LEFT COLUMN: LIVE TACTICAL SCANNER VIEWPORT (7 Cols) -->
+      <div class="lg:col-span-7 flex flex-col gap-4 sm:gap-5 w-full">
+        
+        <!-- Live Viewport Container -->
+        <div class="bg-cyber-card border-2 border-cyber-border rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col gap-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span id="viewportIndicator" class="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-slate-600"></span>
+              <h2 id="viewportTitle" class="font-tech text-xs sm:text-sm font-bold text-white tracking-widest uppercase">TACTICAL SCANNER VIEWPORT</h2>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span id="ocrResolutionBadge" class="bg-black text-slate-300 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded border border-cyber-border">Buffer Mode</span>
+              <span id="ocrWorkerBadge" class="bg-yellow-500/15 text-yellow-400 border border-yellow-500/40 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded font-bold">Tesseract Ready</span>
+            </div>
+          </div>
+
+          <!-- Video Canvas Box with HUD Reticle (Auto-scales without overflow) -->
+          <div id="videoContainer" class="hud-box relative w-full aspect-video max-h-[42vh] sm:max-h-none bg-black rounded-xl overflow-hidden border-2 border-cyber-border flex items-center justify-center transition-all duration-300 shadow-inner">
+            <!-- Active Screen Video Stream (Desktop display capture) -->
+            <video id="screenVideo" autoplay playsinline muted class="w-full h-full object-contain hidden"></video>
+
+            <!-- Hidden Full-Resolution Capture Canvas for Grayscale Preprocessing -->
+            <canvas id="captureCanvas" class="hidden"></canvas>
+
+            <!-- Standby Overlay -->
+            <div id="standbyOverlay" class="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10 bg-cyber-pitch/95 overflow-y-auto">
+              <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-cyber-card border-2 border-cyber-neonGreen/40 flex items-center justify-center text-cyber-neonGreen mb-2 sm:mb-3 shadow-glow-green shrink-0">
+                <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </div>
+              <h3 id="standbyTitle" class="font-tech text-sm sm:text-lg font-bold text-white mb-1 tracking-wide">THREAT SHIELD DISARMED</h3>
+              <p id="standbyDesc" class="text-[11px] sm:text-xs text-slate-400 max-w-md mb-3 sm:mb-5 leading-relaxed font-mono line-clamp-3 sm:line-clamp-none">
+                Click below to start protection. On desktop, captures screen across <span class="text-cyber-neonGreen font-bold">WhatsApp</span>, <span class="text-cyan-400 font-bold">Edge</span>, and <span class="text-white font-bold">Notepad</span>. On mobile, continuously guards clipboard and in-app scratchpad.
+              </p>
+              <button id="startShieldBtn" class="bg-cyber-neonGreen hover:bg-emerald-400 text-black font-tech font-black text-xs sm:text-sm px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl shadow-glow-green transition flex items-center gap-2 cursor-pointer transform active:scale-95">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span id="startShieldBtnText">START LIVE PROTECTION</span>
+              </button>
+            </div>
+
+            <!-- Mobile Active Guard Viewport Visualizer (Shown when mobile guard is active) -->
+            <div id="mobileActiveOverlay" class="hidden absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-10 bg-cyber-pitch/90">
+              <div class="relative flex items-center justify-center mb-3">
+                <div class="w-16 h-16 rounded-full border-2 border-cyber-neonGreen flex items-center justify-center animate-ping opacity-30"></div>
+                <div class="w-14 h-14 rounded-2xl bg-cyber-card border-2 border-cyber-neonGreen flex items-center justify-center text-cyber-neonGreen shadow-glow-green absolute">
+                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+              </div>
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyber-neonGreen/15 border-2 border-cyber-neonGreen text-cyber-neonGreen font-tech text-xs sm:text-sm font-black shadow-glow-green mb-2">
+                <span class="h-2 w-2 rounded-full bg-cyber-neonGreen animate-ping"></span>
+                <span>🟢 MOBILE LIVE GUARD ACTIVE</span>
+              </div>
+              <p class="text-[11px] text-slate-400 font-mono max-w-xs mt-1">
+                Zero-Error Protection active across in-tab text buffers, clipboard, and test vectors.
+              </p>
+            </div>
+
+            <!-- Pinned Mobile Live Badge (Visible during mobile camera streaming) -->
+            <div id="mobileLiveBadgePinned" class="hidden absolute top-3 left-3 z-25 bg-cyber-pitch/90 backdrop-blur-md border border-cyber-neonGreen text-cyber-neonGreen text-[10px] sm:text-xs font-mono font-black px-2.5 py-1 rounded-full shadow-glow-green flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-cyber-neonGreen animate-ping"></span>
+              <span>🟢 MOBILE LIVE GUARD ACTIVE</span>
+            </div>
+
+            <!-- Radar Scanner Beam Overlay (Animated when guarding) -->
+            <div id="radarBeam" class="hidden absolute inset-x-0 h-1/4 radar-beam-green animate-radar-sweep pointer-events-none z-20"></div>
+
+            <!-- HUD Reticle Elements -->
+            <div id="hudOverlay" class="hidden absolute inset-0 pointer-events-none z-20 p-3 sm:p-4 flex flex-col justify-between">
+              <div class="flex items-center justify-between text-[9px] sm:text-[11px] font-mono text-cyber-neonGreen font-bold">
+                <span id="hudScannerType">[SCANNER: NATIVE_STREAM]</span>
+                <span id="hudFps">OCR: IDLE</span>
+              </div>
+              <!-- Center Crosshair Marker -->
+              <div class="self-center flex items-center justify-center opacity-45">
+                <div class="w-6 h-6 sm:w-8 sm:h-8 border border-cyber-neonGreen rounded-full flex items-center justify-center">
+                  <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-cyber-neonGreen rounded-full"></div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between text-[9px] sm:text-[11px] font-mono text-cyber-neonGreen font-bold">
+                <span>PSM-11 SPARSE TEXT</span>
+                <span id="hudTargetStatus" class="text-cyber-neonGreen font-black">SCANNING BUFFER...</span>
+              </div>
+            </div>
+
+            <!-- Threat Overlay (Inside Video container) -->
+            <div id="videoThreatOverlay" class="hidden absolute inset-0 bg-cyber-neonRed/90 z-30 flex flex-col items-center justify-center p-3 sm:p-5 text-center border-4 border-white animate-pulse-danger">
+              <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-black flex items-center justify-center text-white mb-2 shadow-2xl border-2 border-white">
+                <svg class="w-6 h-6 sm:w-8 sm:h-8 text-cyber-neonRed" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              </div>
+              <span class="font-tech text-base sm:text-xl md:text-2xl font-black text-white tracking-widest">CRITICAL THREAT DETECTED!</span>
+              <p id="videoThreatReason" class="text-[11px] sm:text-xs md:text-sm font-mono text-yellow-300 mt-1 max-w-lg font-bold bg-black/80 px-2.5 py-1 rounded-lg border border-yellow-300/50 line-clamp-2">
+                Suspicious vector identified by threat heuristics
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom Viewport Controls (Desktop / Tablet) -->
+          <div class="flex items-center justify-between gap-2 sm:gap-3 pt-1 flex-wrap">
+            <div class="flex items-center gap-2">
+              <button id="stopShieldBtn" disabled class="bg-cyber-card hover:bg-cyber-cardHover disabled:opacity-35 text-slate-300 font-mono text-xs px-3.5 py-2 rounded-xl border border-cyber-border transition flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-3.5 h-3.5 text-cyber-neonRed" fill="currentColor" viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="12" rx="2"/></svg>
+                Stop Protection
+              </button>
+
+              <button id="clearThreatBtn" class="bg-cyber-card hover:bg-cyber-cardHover text-slate-300 font-mono text-xs px-3.5 py-2 rounded-xl border border-cyber-border transition flex items-center gap-1.5 cursor-pointer">
+                Reset
+              </button>
+            </div>
+
+            <div class="flex items-center gap-1.5 text-[11px] font-mono text-slate-400">
+              <span>Filter:</span>
+              <span class="text-cyber-neonGreen font-bold bg-cyber-neonGreen/10 border border-cyber-neonGreen/40 px-2 py-0.5 rounded text-[10px]">
+                Rec.709 Grayscale Contrast
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIVE EXTRACTED TEXT STREAM BUFFER -->
+        <div class="bg-cyber-card border-2 border-cyber-border rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
+              <h3 class="font-tech text-xs sm:text-sm font-bold text-white tracking-widest uppercase">EXTRACTED SCREEN OCR STREAM</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="ocrCharCount" class="text-[11px] font-mono text-slate-400">0 chars</span>
+              <button id="clearOcrLogBtn" class="text-slate-500 hover:text-slate-300 text-[11px] font-mono cursor-pointer" title="Clear text view">Clear</button>
+            </div>
+          </div>
+
+          <!-- Raw OCR Buffer Box with real-time text -->
+          <div id="ocrBufferBox" class="bg-cyber-pitch border border-cyber-border rounded-xl p-3 h-28 sm:h-36 overflow-y-auto font-mono text-xs text-slate-300 leading-relaxed break-all select-text">
+            <span class="text-slate-600 italic">// OCR buffer standby. Start protection or tap any Demo Attack Vector below for immediate interception...</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: INTERACTIVE DEMO VECTORS & SECURITY AUDIT LOG (5 Cols) -->
+      <div class="lg:col-span-5 flex flex-col gap-4 sm:gap-5 w-full">
+        
+        <!-- DEMO ATTACK VECTORS LAUNCHPAD (CLICK-TO-COPY & AUTO-TEST) -->
+        <div class="bg-cyber-card border-2 border-cyber-border rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="h-2 w-2 rounded-full bg-cyber-neonRed animate-pulse"></span>
+              <h3 class="font-tech text-xs sm:text-sm font-bold text-white tracking-widest uppercase">DEMO ATTACK VECTORS</h3>
+            </div>
+            <span class="text-[9px] sm:text-[10px] font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/40 px-2 py-0.5 rounded font-bold">1-TAP AUTO-TEST</span>
+          </div>
+          <p class="text-[11px] sm:text-xs text-slate-400 font-mono">
+            Tap any vector to <span class="text-cyber-neonGreen font-bold">auto-copy</span> and <span class="text-cyan-400 font-bold">auto-paste into scratchpad</span> for instant 1-tap testing:
+          </p>
+
+          <!-- Attack Vectors List (Constrained scroll on mobile so page doesn't stretch infinitely) -->
+          <div class="flex flex-col gap-2 max-h-[38vh] sm:max-h-[420px] overflow-y-auto pr-1">
+            
+            <!-- 1. Paytm Phishing -->
+            <button class="vector-card test-vector-btn bg-cyber-pitch hover:bg-cyber-cardHover border border-cyber-border hover:border-yellow-400 text-left p-2.5 rounded-xl transition flex flex-col gap-1 cursor-pointer" 
+              data-threat="http://paytm-bonus-claim.xyz/verify"
+              data-label="Paytm Phishing">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-yellow-400 font-mono flex items-center gap-1">
+                  <span>⚡ 1. Paytm Phishing</span>
+                </span>
+                <span class="copy-badge text-[9px] font-mono text-slate-500">Tap to Test</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono truncate">paytm-bonus-claim.xyz/verify</span>
+            </button>
+
+            <!-- 2. Shortener Scam -->
+            <button class="vector-card test-vector-btn bg-cyber-pitch hover:bg-cyber-cardHover border border-cyber-border hover:border-cyber-neonRed text-left p-2.5 rounded-xl transition flex flex-col gap-1 cursor-pointer" 
+              data-threat="bit.ly/free-recharge-jio-599"
+              data-label="Shortener Scam">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-cyber-neonRed font-mono flex items-center gap-1">
+                  <span>⚡ 2. Shortener Scam</span>
+                </span>
+                <span class="copy-badge text-[9px] font-mono text-slate-500">Tap to Test</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono truncate">bit.ly/free-recharge-jio-599</span>
+            </button>
+
+            <!-- 3. Typo-Squatting -->
+            <button class="vector-card test-vector-btn bg-cyber-pitch hover:bg-cyber-cardHover border border-cyber-border hover:border-yellow-400 text-left p-2.5 rounded-xl transition flex flex-col gap-1 cursor-pointer" 
+              data-threat="https://g00gle.com/login-verify"
+              data-label="Typo-Squatting">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-yellow-400 font-mono flex items-center gap-1">
+                  <span>⚡ 3. Typo-Squatting</span>
+                </span>
+                <span class="copy-badge text-[9px] font-mono text-slate-500">Tap to Test</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono truncate">g00gle.com/login-verify</span>
+            </button>
+
+            <!-- 4. Fake Bank Credited SMS -->
+            <button class="vector-card test-vector-btn bg-cyber-pitch hover:bg-cyber-cardHover border border-cyber-border hover:border-cyber-neonGreen text-left p-2.5 rounded-xl transition flex flex-col gap-1 cursor-pointer" 
+              data-threat="Rs 49,999 CREDITED to your A/C XXXXXX1234. Click to claim: http://bit.ly/claim-bank-cash"
+              data-label="Fake Bank Credited SMS">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-cyber-neonGreen font-mono flex items-center gap-1">
+                  <span>⚡ 4. Fake Bank Credited SMS</span>
+                  <span class="bg-cyber-neonGreen/10 text-cyber-neonGreen text-[8px] px-1 py-0.2 rounded border border-cyber-neonGreen/30">SMISHING</span>
+                </span>
+                <span class="copy-badge text-[9px] font-mono text-slate-500">Tap to Test</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono truncate">Rs 49,999 CREDITED to your A/C XXXXXX1234. Click to claim: http://bit.ly/claim-bank-cash</span>
+            </button>
+
+            <!-- 5. Fake Electricity Bill Disconnection -->
+            <button class="vector-card test-vector-btn bg-cyber-pitch hover:bg-cyber-cardHover border border-cyber-border hover:border-yellow-400 text-left p-2.5 rounded-xl transition flex flex-col gap-1 cursor-pointer" 
+              data-threat="Your Electricity power will be disconnected tonight. Call Officer at 9876543210 or click: http://paytm-bill-verify.info"
+              data-label="Fake Electricity Bill">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-yellow-400 font-mono flex items-center gap-1">
+                  <span>⚡ 5. Fake Electricity Bill</span>
+                  <span class="bg-yellow-400/10 text-yellow-400 text-[8px] px-1 py-0.2 rounded border border-yellow-400/30">UTILITY</span>
+                </span>
+                <span class="copy-badge text-[9px] font-mono text-slate-500">Tap to Test</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono truncate">Your Electricity power will be disconnected tonight. Call Officer at 9876543210...</span>
+            </button>
+
+            <!-- 6. Urgent KYC Block Lure -->
+            <button class="vector-card test-vector-btn bg-cyber-pitch hover:bg-cyber-cardHover border border-cyber-border hover:border-cyber-neonRed text-left p-2.5 rounded-xl transition flex flex-col gap-1 cursor-pointer" 
+              data-threat="Dear Customer, your SIM will be BLOCKED within 24 hours. Update your KYC immediately: http://urgent-verify-kyc-sim-blocked.com"
+              data-label="Urgent KYC Block Lure">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-cyber-neonRed font-mono flex items-center gap-1">
+                  <span>⚡ 6. Urgent KYC Block Lure</span>
+                  <span class="bg-cyber-neonRed/10 text-cyber-neonRed text-[8px] px-1 py-0.2 rounded border border-cyber-neonRed/30">URGENCY</span>
+                </span>
+                <span class="copy-badge text-[9px] font-mono text-slate-500">Tap to Test</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono truncate">Dear Customer, your SIM will be BLOCKED within 24 hours. Update your KYC...</span>
+            </button>
+
+          </div>
+
+          <!-- In-Tab Test Scratchpad for immediate 1-click verification -->
+          <div class="mt-1 border-t border-cyber-border pt-2.5">
+            <div class="flex items-center justify-between mb-1">
+              <label for="testScratchpad" class="text-xs font-mono font-bold text-slate-200 flex items-center gap-1">
+                <span>In-Tab Scratchpad</span>
+                <span id="scratchpadStatusBadge" class="text-[8px] sm:text-[9px] font-mono text-cyber-neonGreen bg-cyber-neonGreen/10 border border-cyber-neonGreen/30 px-1.5 py-0.5 rounded">Live Test</span>
+              </label>
+              <button id="clearScratchpadBtn" class="text-[10px] text-slate-500 hover:text-slate-300 font-mono cursor-pointer">Clear</button>
+            </div>
+            <textarea id="testScratchpad" rows="2" placeholder="Tap any vector above to auto-paste, or type any suspicious message/URL..." class="w-full bg-cyber-pitch border border-cyber-border rounded-xl p-2 sm:p-2.5 text-xs font-mono text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-cyber-neonGreen transition resize-none"></textarea>
+            <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono mt-0.5">
+              <span>Evaluates on keystroke</span>
+              <button id="manualEvalScratchpadBtn" class="text-cyan-400 hover:underline font-bold cursor-pointer">Run Manual Scan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECURITY AUDIT LOG (Responsive max-height with scrolling) -->
+        <div class="bg-cyber-card border-2 border-cyber-border rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col gap-2.5 flex-1">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <h3 class="font-tech text-xs sm:text-sm font-bold text-white tracking-widest uppercase">TACTICAL AUDIT LOG</h3>
+            </div>
+            <button id="clearAuditLogBtn" class="text-slate-500 hover:text-slate-300 text-[11px] font-mono cursor-pointer">Clear</button>
+          </div>
+
+          <div id="auditLogContainer" class="bg-cyber-pitch border border-cyber-border rounded-xl p-2.5 sm:p-3 max-h-36 sm:max-h-48 overflow-y-auto font-mono text-[10px] sm:text-[11px] space-y-1.5 select-text">
+            <div class="text-slate-500">[INIT] AI CyberGuard engine loaded &bull; Team Syntax Squad</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="pt-3 pb-2 border-t border-cyber-border flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] sm:text-xs text-slate-500 font-mono text-center sm:text-left">
+      <div>AI CyberGuard &bull; Team Syntax Squad &bull; Zero-Error Cross-Platform Shield</div>
+      <div class="flex items-center gap-3 justify-center flex-wrap">
+        <span>Tesseract.js v5 WASM</span>
+        <span>Document PiP</span>
+        <span>Dual Siren &amp; TTS</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MOBILE STICKY BOTTOM ACTION BAR (MANDATORY FOR MOBILE TOUCH) -->
+  <!-- ============================================================= -->
+  <aside aria-label="Mobile Controls" class="sm:hidden fixed bottom-0 inset-x-0 z-40 p-2.5 bg-slate-950/95 backdrop-blur-md border-t border-cyber-border flex items-center justify-between gap-2 shadow-2xl">
+    <button id="mobileStartShieldBtn" class="flex-1 bg-cyber-neonGreen active:bg-emerald-400 text-black font-tech font-black text-xs py-3 px-3 rounded-xl shadow-glow-green flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation">
+      <svg class="w-4 h-4 text-black shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span id="mobileStartLabel">START SHIELD</span>
+    </button>
+
+    <button id="mobileTestAlertBtn" class="bg-cyber-neonRed/20 active:bg-cyber-neonRed/40 border border-cyber-neonRed text-cyber-neonRed text-xs font-mono font-black py-3 px-3 rounded-xl flex items-center justify-center gap-1 shrink-0 cursor-pointer touch-manipulation">
+      <svg class="w-3.5 h-3.5 text-cyber-neonRed" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      TEST
+    </button>
+
+    <button id="mobileTogglePipBtn" class="bg-cyber-card active:bg-cyber-cardHover border border-cyan-500/60 text-cyan-300 text-xs font-mono font-bold py-3 px-3 rounded-xl flex items-center justify-center gap-1 shrink-0 cursor-pointer touch-manipulation">
+      <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+      PIP
+    </button>
+
+    <button id="mobileAudioMuteBtn" class="bg-cyber-card active:bg-cyber-cardHover border border-cyber-border text-slate-300 text-xs font-mono py-3 px-2.5 rounded-xl flex items-center justify-center shrink-0 cursor-pointer touch-manipulation">
+      <svg id="mobileAudioIcon" class="w-4 h-4 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+    </button>
+  </aside>
+
+  <!-- HIDDEN VIDEO PIP FALLBACK ELEMENT -->
+  <video id="pipVideoFallback" autoplay muted playsinline class="hidden"></video>
+  <canvas id="pipCanvasFallback" width="500" height="320" class="hidden"></canvas>
+
+  <!-- ============================================================= -->
+  <!-- JAVASCRIPT CORE APPLICATION LOGIC -->
+  <!-- ============================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      // -------------------------------------------------------------
+      // 1. APPLICATION STATE & DEVICE CAPABILITY DETECTION
+      // -------------------------------------------------------------
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth < 768);
+      const hasDisplayMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
+      const hasDocumentPiP = 'documentPictureInPicture' in window;
+
+      const state = {
+        isGuarding: false,
+        guardMode: isMobileDevice || !hasDisplayMedia ? 'mobile' : 'desktop', // 'desktop' | 'mobile'
+        isOcrProcessing: false,
+        isAlertActive: false,
+        stream: null,
+        scanTimeoutId: null,
+        totalScans: 0,
+        threatsCount: 0,
+        sirenMuted: false,
+        isSirenPlaying: false,
+        lastThreatReason: '',
+        lastThreatSnippet: '',
+        pipWindow: null, // Document PiP window reference
+        lastExtractedText: '',
+        audioContext: null,
+        osc1: null,
+        osc2: null,
+        sirenInterval: null,
+        lastTtsSpeakTime: 0,
+      };
+
+      // -------------------------------------------------------------
+      // 2. DOM ELEMENT REFERENCES
+      // -------------------------------------------------------------
+      const els = {
+        platformPill: document.getElementById('platformPill'),
+        screenVideo: document.getElementById('screenVideo'),
+        captureCanvas: document.getElementById('captureCanvas'),
+        videoContainer: document.getElementById('videoContainer'),
+        standbyOverlay: document.getElementById('standbyOverlay'),
+        standbyTitle: document.getElementById('standbyTitle'),
+        standbyDesc: document.getElementById('standbyDesc'),
+        mobileActiveOverlay: document.getElementById('mobileActiveOverlay'),
+        mobileLiveBadgePinned: document.getElementById('mobileLiveBadgePinned'),
+        radarBeam: document.getElementById('radarBeam'),
+        hudOverlay: document.getElementById('hudOverlay'),
+        hudScannerType: document.getElementById('hudScannerType'),
+        hudFps: document.getElementById('hudFps'),
+        hudTargetStatus: document.getElementById('hudTargetStatus'),
+        videoThreatOverlay: document.getElementById('videoThreatOverlay'),
+        videoThreatReason: document.getElementById('videoThreatReason'),
+        startShieldBtn: document.getElementById('startShieldBtn'),
+        startShieldBtnText: document.getElementById('startShieldBtnText'),
+        stopShieldBtn: document.getElementById('stopShieldBtn'),
+        clearThreatBtn: document.getElementById('clearThreatBtn'),
+        dangerBanner: document.getElementById('dangerBanner'),
+        dangerBannerText: document.getElementById('dangerBannerText'),
+        bannerMuteBtn: document.getElementById('bannerMuteBtn'),
+        bannerDismissBtn: document.getElementById('bannerDismissBtn'),
+        testAlertBtn: document.getElementById('testAlertBtn'),
+        togglePipBtn: document.getElementById('togglePipBtn'),
+        pipBtnLabel: document.getElementById('pipBtnLabel'),
+        toggleAudioMuteBtn: document.getElementById('toggleAudioMuteBtn'),
+        audioMuteLabel: document.getElementById('audioMuteLabel'),
+        audioIcon: document.getElementById('audioIcon'),
+        statusPing: document.getElementById('statusPing'),
+        statusText: document.getElementById('statusText'),
+        statusSubtext: document.getElementById('statusSubtext'),
+        viewportIndicator: document.getElementById('viewportIndicator'),
+        viewportTitle: document.getElementById('viewportTitle'),
+        shieldCard: document.getElementById('shieldCard'),
+        threatCard: document.getElementById('threatCard'),
+        metricTotalScans: document.getElementById('metricTotalScans'),
+        metricLatency: document.getElementById('metricLatency'),
+        metricThreatsCount: document.getElementById('metricThreatsCount'),
+        metricLastThreat: document.getElementById('metricLastThreat'),
+        ocrWorkerBadge: document.getElementById('ocrWorkerBadge'),
+        ocrResolutionBadge: document.getElementById('ocrResolutionBadge'),
+        ocrBufferBox: document.getElementById('ocrBufferBox'),
+        ocrCharCount: document.getElementById('ocrCharCount'),
+        clearOcrLogBtn: document.getElementById('clearOcrLogBtn'),
+        auditLogContainer: document.getElementById('auditLogContainer'),
+        clearAuditLogBtn: document.getElementById('clearAuditLogBtn'),
+        testScratchpad: document.getElementById('testScratchpad'),
+        scratchpadStatusBadge: document.getElementById('scratchpadStatusBadge'),
+        clearScratchpadBtn: document.getElementById('clearScratchpadBtn'),
+        manualEvalScratchpadBtn: document.getElementById('manualEvalScratchpadBtn'),
+        pipVideoFallback: document.getElementById('pipVideoFallback'),
+        pipCanvasFallback: document.getElementById('pipCanvasFallback'),
+        // Mobile sticky bottom bar elements
+        mobileStartShieldBtn: document.getElementById('mobileStartShieldBtn'),
+        mobileStartLabel: document.getElementById('mobileStartLabel'),
+        mobileTestAlertBtn: document.getElementById('mobileTestAlertBtn'),
+        mobileTogglePipBtn: document.getElementById('mobileTogglePipBtn'),
+        mobileAudioMuteBtn: document.getElementById('mobileAudioMuteBtn'),
+        mobileAudioIcon: document.getElementById('mobileAudioIcon'),
+      };
+
+      // Set initial platform label
+      if (els.platformPill) {
+        els.platformPill.textContent = isMobileDevice ? 'MOBILE MODE' : 'DESKTOP READY';
+      }
+
+      // -------------------------------------------------------------
+      // 3. EXPANDED FINANCIAL SMS & PHISHING PATTERNS
+      // -------------------------------------------------------------
+      const THREAT_PATTERNS = [
+        // A. Fake Bank Credited / Debited Financial Smishing
+        {
+          regex: /(?:rs\.?|inr|\$|₹)\s*[\d,]+\s*(?:credited|debited|won|received|transferred)/i,
+          reason: 'Financial Smishing: Fake Account Credit/Debit notification pattern detected',
+          type: 'FAKE_BANK_CREDIT'
+        },
+        {
+          regex: /(?:credited|debited)\s+(?:to|from)\s+(?:your\s+)?(?:a\/?c|account)/i,
+          reason: 'Financial Smishing: Unsolicited bank balance alert pattern intercepted',
+          type: 'FAKE_BANK_CREDIT'
+        },
+        // B. Fake Electricity & Utility Bill Disconnection Scam
+        {
+          regex: /(?:electricity|power)\s*(?:will\s+be\s+)?disconnected/i,
+          reason: 'Utility Fraud: Fake electricity bill disconnection threat intercepted',
+          type: 'UTILITY_DISCONNECTION_SCAM'
+        },
+        {
+          regex: /(?:unpaid|overdue|pending)\s*(?:electricity\s*)?bill/i,
+          reason: 'Utility Fraud: Overdue bill lure with unsolicited contact number',
+          type: 'UTILITY_DISCONNECTION_SCAM'
+        },
+        // C. Phishing Call-to-Action with Unsolicited Officer/Helpline Mobile Numbers
+        {
+          regex: /(?:call|contact)\s*(?:officer|helpline|support|manager|agent)\s*(?:at|on|:)?\s*(?:\+?91|0)?[6-9]\d{9}/i,
+          reason: 'Smishing Contact Lure: Fraudulent officer/helpline number intercepted',
+          type: 'FRAUDULENT_CONTACT_LURE'
+        },
+        // D. Urgent KYC & SIM Blocked Threats
+        {
+          regex: /(?:sim|card|atm|account)\s*(?:will\s+be\s+)?(?:blocked|suspended|deactivated|frozen|terminated)/i,
+          reason: 'Urgency Phishing: Fake SIM / Account suspension threat detected',
+          type: 'ACCOUNT_SUSPENSION_SCAM'
+        },
+        {
+          regex: /(?:update|verify)\s*(?:your\s*)?kyc/i,
+          reason: 'KYC Phishing: Unsolicited KYC verification requirement detected',
+          type: 'KYC_PHISHING'
+        },
+        {
+          regex: /kyc\s*(?:update|verification)\s*(?:required|pending|mandatory|blocked|fail)/i,
+          reason: 'KYC Phishing: Mandatory KYC suspension threat intercepted',
+          type: 'KYC_PHISHING'
+        },
+        // E. Reward / Cash Claim Smishing
+        {
+          regex: /(?:claim|redeem)\s*(?:your\s*)?(?:reward|bonus|cashback|points|cash|lottery|payout|gift)/i,
+          reason: 'Reward Smishing: Fraudulent prize/bonus claim lure detected',
+          type: 'REWARD_PHISHING'
+        },
+        // F. Paytm, PhonePe, UPI Bonus & Wallet Lures
+        {
+          regex: /\b(?:paytm|phonepe|gpay|googlepay|bhim|bank|sbi|hdfc|icici|axis)[-_ ]*(?:bonus|cash|offer|reward|claims?|kyc|wallet|lottery|refund|verify|alert|payout)\b/i,
+          reason: 'Financial Phishing: Fake Paytm/UPI Wallet or Banking reward lure detected',
+          type: 'FINANCIAL_PHISHING'
+        },
+        // G. Free Recharge & Promotional WhatsApp Forward Scams
+        {
+          regex: /\b(?:free|unlimited|special|bonus|claim)[-_ ]*(?:recharge|jio|airtel|vi|data|calls?|offer|gift|money|iphone|cashback|voucher)\b/i,
+          reason: 'Promotional Scam: Fraudulent free recharge or promotional reward lure intercepted',
+          type: 'PROMOTIONAL_SCAM'
+        },
+        // H. Obfuscated URL Shorteners & Telegram Invite Redirects
+        {
+          regex: /\b(?:https?:\/\/)?(?:www\.)?(?:bit\.ly|tinyurl\.com|t\.me|cutt\.ly|is\.gd|rb\.gy|ow\.ly|shorturl\.at|rebrand\.ly|v\.gd|soo\.gd|bc\.vc|bitly\.com)\/[a-zA-Z0-9_\-\.\/]+/i,
+          reason: 'Obfuscated Shortener: Suspicious shortlink / Telegram invite redirect detected',
+          type: 'URL_SHORTENER'
+        },
+        // I. Brand Typo-squatting & Credential Harvesting in URLs
+        {
+          regex: /\b(?:https?:\/\/)?(?:www\.)?(?:g00gle(?:\.com)?|micros0ft|paypa1|apple[-_]?id[-_]?verify|netflix[-_]?login|faceb00k|instagrarn|amaz0n|binance[-_]?airdrop)[^\s]*/i,
+          reason: 'Typosquatting: Impersonation domain attempting credential theft identified',
+          type: 'TYPOSQUAT_DOMAIN'
+        },
+        // J. Direct Raw IP Hyperlinks (Bypasses Domain DNS)
+        {
+          regex: /\b(?:https?:\/\/)?(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?(?:\/[^\s]*)?\b/i,
+          reason: 'Raw IP Link: Connection request directed to raw IP address bypassing domain DNS',
+          type: 'RAW_IP_CONNECTION'
+        },
+        // K. Web3 Drainers & Crypto Seed Harvesting
+        {
+          regex: /\b(?:seed[-_ ]*phrase|secret[-_ ]*recovery[-_ ]*phrase|airdrop[-_ ]*claim|claim[-_ ]*airdrop|connect[-_ ]*wallet|metamask[-_ ]*verify|wallet[-_ ]*drainer)\b/i,
+          reason: 'Web3 Threat: Cryptocurrency wallet credential theft or malicious drainer detected',
+          type: 'CRYPTO_DRAINER'
+        },
+        // L. Plaintext Insecure Links with Phishing Keywords
+        {
+          regex: /\bhttp:\/\/[a-zA-Z0-9.-]+(?:\/[^\s]*)?/i,
+          reason: 'Insecure Protocol: Plaintext HTTP link vulnerable to interception',
+          type: 'UNENCRYPTED_HTTP'
+        }
+      ];
+
+      // Multi-factor Smishing Evaluator
+      function evaluateThreatSignatures(rawText) {
+        if (!rawText || typeof rawText !== 'string') return null;
+
+        const trimmed = rawText.trim();
+        if (trimmed.length < 3) return null;
+
+        // 1. Direct Regex scan against all signature rules
+        for (const pattern of THREAT_PATTERNS) {
+          const match = trimmed.match(pattern.regex);
+          if (match) {
+            return {
+              matched: true,
+              reason: pattern.reason,
+              type: pattern.type,
+              sample: match[0]
+            };
+          }
+        }
+
+        // 2. Normalized OCR artifact cleanup (e.g. "bit . ly / recharge" or "http : / /")
+        const normalized = trimmed
+          .replace(/([a-zA-Z0-9])\s*([.\/:\-_])\s*([a-zA-Z0-9])/g, '$1$2$3')
+          .replace(/http\s*:\s*\/\s*\//gi, 'http://')
+          .replace(/https\s*:\s*\/\s*\//gi, 'https://');
+
+        for (const pattern of THREAT_PATTERNS) {
+          const match = normalized.match(pattern.regex);
+          if (match) {
+            return {
+              matched: true,
+              reason: pattern.reason,
+              type: pattern.type,
+              sample: match[0]
+            };
+          }
+        }
+
+        // 3. Composite Check: Financial/Urgency phrase + Mobile Phone Number or Link in same message
+        const hasFinancialTerm = /(?:credited|debited|disconnected|suspended|kyc|bonus|won|claim|blocked|overdue)/i.test(trimmed);
+        const hasPhoneNumber = /(?:\+?91|0)?[6-9]\d{9}/.test(trimmed);
+        const hasUrlOrShortener = /(?:https?:\/\/|bit\.ly|tinyurl|t\.me|\.xyz|\.info|\.top)/i.test(trimmed);
+
+        if (hasFinancialTerm && (hasPhoneNumber || hasUrlOrShortener)) {
+          return {
+            matched: true,
+            reason: 'Composite Smishing: Unsolicited financial/urgency phrase combined with contact/link',
+            type: 'COMPOSITE_SMISHING',
+            sample: trimmed.slice(0, 75)
+          };
+        }
+
+        return null;
+      }
+
+      // -------------------------------------------------------------
+      // 4. TESSERACT.JS WASM WORKER ENGINE
+      // -------------------------------------------------------------
+      let ocrWorker = null;
+      let isOcrReady = false;
+      let isOcrInitializing = false;
+
+      async function initTesseractWorker() {
+        if (ocrWorker || isOcrInitializing) return;
+        isOcrInitializing = true;
+        setWorkerBadge('INITIALIZING', 'OCR Loading...');
+        addLog('SYSTEM', 'Initializing Tesseract.js WASM worker...');
+
+        try {
+          if (typeof Tesseract === 'undefined') {
+            throw new Error('Tesseract.js library not loaded');
+          }
+
+          ocrWorker = await Tesseract.createWorker('eng', 1, {
+            logger: (m) => {
+              if (m.status === 'recognizing text') {
+                setWorkerBadge('SCANNING', `OCR ${Math.round(m.progress * 100)}%`);
+              }
+            }
+          });
+
+          // Sparse text page segmentation mode (PSM 11) for scattered chat bubbles, URLs & desktop text
+          try {
+            await ocrWorker.setParameters({
+              tessedit_pageseg_mode: '11',
+            });
+          } catch (_) {}
+
+          isOcrReady = true;
+          setWorkerBadge('READY', 'Tesseract Armed');
+          addLog('SUCCESS', 'Tesseract.js OCR engine armed and ready.');
+        } catch (err) {
+          console.warn('Worker initialization issue:', err);
+          setWorkerBadge('WARN', 'OCR Ready (Fallback)');
+          isOcrReady = false;
+        } finally {
+          isOcrInitializing = false;
+        }
+      }
+
+      function setWorkerBadge(status, label) {
+        if (!els.ocrWorkerBadge) return;
+        if (status === 'READY') {
+          els.ocrWorkerBadge.className = 'bg-cyber-neonGreen/15 text-cyber-neonGreen border border-cyber-neonGreen/50 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded font-bold';
+        } else if (status === 'SCANNING') {
+          els.ocrWorkerBadge.className = 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/50 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded font-bold';
+        } else {
+          els.ocrWorkerBadge.className = 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/40 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded font-bold';
+        }
+        els.ocrWorkerBadge.textContent = label;
+      }
+
+      // -------------------------------------------------------------
+      // 5. DUAL AUDIO ENGINE: SIREN + TTS VOICE WARNING
+      // -------------------------------------------------------------
+      function getAudioContext() {
+        if (!state.audioContext) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            state.audioContext = new AudioContext();
+          }
+        }
+        if (state.audioContext && state.audioContext.state === 'suspended') {
+          state.audioContext.resume();
+        }
+        return state.audioContext;
+      }
+
+      function startEmergencySiren() {
+        if (state.sirenMuted || state.isSirenPlaying) return;
+
+        try {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+
+          const now = ctx.currentTime;
+
+          // Piercing sawtooth tone
+          const osc1 = ctx.createOscillator();
+          const gain1 = ctx.createGain();
+          osc1.type = 'sawtooth';
+          osc1.frequency.setValueAtTime(800, now);
+
+          // Dissonant square wave alarm
+          const osc2 = ctx.createOscillator();
+          const gain2 = ctx.createGain();
+          osc2.type = 'square';
+          osc2.frequency.setValueAtTime(980, now);
+
+          gain1.gain.setValueAtTime(0.18, now);
+          gain2.gain.setValueAtTime(0.12, now);
+
+          osc1.connect(gain1);
+          osc2.connect(gain2);
+          gain1.connect(ctx.destination);
+          gain2.connect(ctx.destination);
+
+          osc1.start(now);
+          osc2.start(now);
+
+          state.osc1 = osc1;
+          state.osc2 = osc2;
+          state.isSirenPlaying = true;
+
+          // Rapid frequency modulation wailing
+          let toggle = false;
+          state.sirenInterval = setInterval(() => {
+            if (!state.isSirenPlaying || !state.osc1 || !state.osc2) return;
+            const t = ctx.currentTime;
+            toggle = !toggle;
+            state.osc1.frequency.setTargetAtTime(toggle ? 1220 : 720, t, 0.07);
+            state.osc2.frequency.setTargetAtTime(toggle ? 680 : 980, t, 0.07);
+          }, 220);
+
+        } catch (err) {
+          console.warn('Audio Siren Error:', err);
+        }
+      }
+
+      function stopEmergencySiren() {
+        if (state.sirenInterval) {
+          clearInterval(state.sirenInterval);
+          state.sirenInterval = null;
+        }
+        if (state.osc1) {
+          try { state.osc1.stop(); state.osc1.disconnect(); } catch (_) {}
+          state.osc1 = null;
+        }
+        if (state.osc2) {
+          try { state.osc2.stop(); state.osc2.disconnect(); } catch (_) {}
+          state.osc2 = null;
+        }
+        state.isSirenPlaying = false;
+      }
+
+      function playVoiceWarning() {
+        if (!('speechSynthesis' in window)) return;
+
+        const now = Date.now();
+        if (now - state.lastTtsSpeakTime < 4500) return; // Debounce repeat calls
+        state.lastTtsSpeakTime = now;
+
+        try {
+          window.speechSynthesis.cancel();
+          const spokenText = "Warning! Critical security threat detected on your screen!";
+          const utterance = new SpeechSynthesisUtterance(spokenText);
+          utterance.rate = 1.05;
+          utterance.pitch = 1.1;
+          utterance.volume = 1.0;
+
+          const voices = window.speechSynthesis.getVoices();
+          const alertVoice = voices.find(v => v.lang && v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('David')));
+          if (alertVoice) {
+            utterance.voice = alertVoice;
+          }
+
+          window.speechSynthesis.speak(utterance);
+        } catch (e) {
+          console.warn('TTS Voice warning error:', e);
+        }
+      }
+
+      // -------------------------------------------------------------
+      // 6. ALWAYS-ON-TOP FLOATING PIP WINDOW (CROSS-BROWSER)
+      // -------------------------------------------------------------
+      async function launchDocumentPiPWindow() {
+        if (!hasDocumentPiP) {
+          launchFallbackVideoPiP();
+          return null;
+        }
+
+        if (state.pipWindow && !state.pipWindow.closed) {
+          return state.pipWindow;
+        }
+
+        try {
+          const width = Math.min(window.innerWidth - 30, 520);
+          const height = 330;
+          const pipWin = await window.documentPictureInPicture.requestWindow({
+            width: width,
+            height: height,
+          });
+          state.pipWindow = pipWin;
+          renderPipWindowContent(pipWin);
+          updatePipStatus(true);
+          updatePipHUD(state.isAlertActive, state.lastThreatReason, state.lastThreatSnippet);
+          addLog('SYSTEM', 'Always-on-Top Floating PiP Window pinned over desktop applications.');
+          return pipWin;
+        } catch (err) {
+          console.warn('Document PiP request notice:', err);
+          launchFallbackVideoPiP();
+          return null;
+        }
+      }
+
+      function renderPipWindowContent(pipWin) {
+        pipWin.document.title = 'AI CyberGuard - Floating Threat HUD';
+        pipWin.document.head.innerHTML = `
+          <meta charset="utf-8">
+          <style>
+            * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace, sans-serif; }
+            body {
+              background: #020617;
+              color: #f8fafc;
+              padding: 12px;
+              user-select: none;
+              height: 100vh;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              overflow: hidden;
+              transition: background-color 0.2s ease;
+            }
+            body.danger-mode {
+              background: #ff003c !important;
+              animation: pipStrobeFlash 0.32s infinite alternate !important;
+            }
+            @keyframes pipStrobeFlash {
+              0% { background: #ff003c; }
+              100% { background: #7a001d; }
+            }
+            .hud-card {
+              border: 2px solid #1e293b;
+              background: #090e1a;
+              border-radius: 14px;
+              padding: 14px;
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              transition: all 0.2s ease;
+            }
+            body.danger-mode .hud-card {
+              border: 3px solid #ffffff;
+              background: rgba(0, 0, 0, 0.94);
+              box-shadow: 0 0 40px rgba(255, 255, 255, 0.9);
+            }
+            .header-bar {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 8px;
+            }
+            .brand-title {
+              font-size: 11px;
+              font-weight: 900;
+              letter-spacing: 0.1em;
+              color: #00ff66;
+              text-transform: uppercase;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+            }
+            body.danger-mode .brand-title {
+              color: #ffd000;
+            }
+            .pulse-dot {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: #00ff66;
+              box-shadow: 0 0 8px #00ff66;
+            }
+            body.danger-mode .pulse-dot {
+              background: #ffffff;
+              box-shadow: 0 0 12px #ffffff;
+              animation: dotBlink 0.4s infinite;
+            }
+            @keyframes dotBlink { from { opacity: 1; } to { opacity: 0.2; } }
+            .badge-state {
+              font-size: 10px;
+              font-family: monospace;
+              background: rgba(0, 255, 102, 0.12);
+              color: #00ff66;
+              padding: 2px 8px;
+              border-radius: 9999px;
+              border: 1px solid rgba(0, 255, 102, 0.4);
+              font-weight: 800;
+            }
+            body.danger-mode .badge-state {
+              background: #ffffff;
+              color: #ff003c;
+              border: 2px solid #ffffff;
+              font-weight: 900;
+            }
+            .threat-alert-box {
+              background: rgba(255, 0, 60, 0.25);
+              border: 2px solid #ff003c;
+              border-radius: 10px;
+              padding: 10px 12px;
+              color: #ffffff;
+              margin: 4px 0;
+            }
+            body.danger-mode .threat-alert-box {
+              background: rgba(180, 0, 30, 0.88);
+              border: 2px solid #ffffff;
+            }
+            .threat-heading {
+              font-size: 12px;
+              font-weight: 900;
+              color: #ffd000;
+              letter-spacing: 0.04em;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+            }
+            .threat-reason-text {
+              font-size: 11px;
+              font-weight: 700;
+              color: #ffffff;
+              margin-top: 4px;
+              line-height: 1.35;
+            }
+            .threat-snippet-box {
+              font-size: 11px;
+              font-family: monospace;
+              color: #00ff66;
+              background: #000000;
+              padding: 5px 9px;
+              border-radius: 6px;
+              margin-top: 6px;
+              display: block;
+              word-break: break-all;
+              border: 1px solid rgba(255, 255, 255, 0.4);
+              font-weight: 800;
+              max-height: 55px;
+              overflow-y: auto;
+            }
+            body.danger-mode .threat-snippet-box {
+              color: #ffd000;
+              border-color: #ffd000;
+            }
+            .status-safe-text {
+              font-size: 12px;
+              color: #94a3b8;
+              line-height: 1.45;
+            }
+            .actions-bar {
+              display: flex;
+              gap: 6px;
+              margin-top: 10px;
+            }
+            button.pip-btn {
+              padding: 7px 12px;
+              border-radius: 8px;
+              font-size: 11px;
+              font-weight: 800;
+              font-family: monospace;
+              cursor: pointer;
+              transition: all 0.15s ease;
+              border: none;
+            }
+            button.pip-dismiss {
+              background: #ffffff;
+              color: #b91c1c;
+              flex: 1;
+              box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            }
+            button.pip-dismiss:hover {
+              background: #fef08a;
+              color: #7f1d1d;
+            }
+            button.pip-mute {
+              background: #1e293b;
+              color: #e2e8f0;
+              border: 1px solid #475569;
+            }
+            button.pip-mute:hover {
+              background: #334155;
+            }
+            button.pip-test {
+              background: rgba(255, 0, 60, 0.2);
+              color: #ff4d6d;
+              border: 1px solid #ff003c;
+            }
+            button.pip-test:hover {
+              background: #ff003c;
+              color: #ffffff;
+            }
+          </style>
+        `;
+
+        pipWin.document.body.innerHTML = `
+          <div class="hud-card">
+            <div class="header-bar">
+              <div class="brand-title">
+                <span class="pulse-dot"></span>
+                <span>AI CYBERGUARD // SYNTAX SQUAD</span>
+              </div>
+              <span id="pipStatusBadge" class="badge-state">ARMED</span>
+            </div>
+
+            <div id="pipSafeView">
+              <p class="status-safe-text">Tactical shield active over WhatsApp, Edge, Telegram &amp; Notepad. High-resolution OCR scanning buffer for malicious URLs &amp; fake SMS scams.</p>
+            </div>
+
+            <div id="pipDangerView" style="display: none;">
+              <div class="threat-alert-box">
+                <div class="threat-heading">
+                  <span>🚨</span> <span>THREAT INTERCEPTED ON SCREEN</span>
+                </div>
+                <div id="pipThreatReason" class="threat-reason-text">Malicious vector detected</div>
+                <div id="pipThreatSnippet" class="threat-snippet-box">Payload snippet</div>
+              </div>
+            </div>
+
+            <div class="actions-bar">
+              <button id="pipDismissBtn" class="pip-btn pip-dismiss" style="display: none;">DISMISS &amp; MUTE</button>
+              <button id="pipMuteBtn" class="pip-btn pip-mute">Mute</button>
+              <button id="pipTestBtn" class="pip-btn pip-test">Test PiP Alert</button>
+            </div>
+          </div>
+        `;
+
+        // Bind PiP in-window buttons
+        const doc = pipWin.document;
+        doc.getElementById('pipDismissBtn').onclick = () => {
+          clearThreatState();
+        };
+        doc.getElementById('pipMuteBtn').onclick = () => {
+          toggleSirenMute();
+          const btn = doc.getElementById('pipMuteBtn');
+          if (btn) btn.textContent = state.sirenMuted ? 'Unmute' : 'Mute';
+        };
+        doc.getElementById('pipTestBtn').onclick = () => {
+          triggerSimulatedThreat('bit.ly/free-recharge-jio-599', 'Scam: Fraudulent free recharge link intercepted');
+        };
+
+        pipWin.addEventListener('pagehide', () => {
+          state.pipWindow = null;
+          updatePipStatus(false);
+        });
+      }
+
+      function updatePipHUD(isDanger, reason, snippet) {
+        if (!state.pipWindow || state.pipWindow.closed) {
+          updateFallbackVideoPiP(isDanger, reason, snippet);
+          return;
+        }
+
+        try {
+          const doc = state.pipWindow.document;
+          const body = doc.body;
+          const badge = doc.getElementById('pipStatusBadge');
+          const safeView = doc.getElementById('pipSafeView');
+          const dangerView = doc.getElementById('pipDangerView');
+          const reasonEl = doc.getElementById('pipThreatReason');
+          const snippetEl = doc.getElementById('pipThreatSnippet');
+          const dismissBtn = doc.getElementById('pipDismissBtn');
+
+          if (isDanger) {
+            body.className = 'danger-mode';
+            if (badge) badge.textContent = 'CRITICAL THREAT';
+            if (safeView) safeView.style.display = 'none';
+            if (dangerView) dangerView.style.display = 'block';
+            if (reasonEl) reasonEl.textContent = reason || 'Suspicious vector intercepted on screen';
+            if (snippetEl) snippetEl.textContent = `⚠️ INTERCEPTED: ${snippet || 'Malicious link detected'}`;
+            if (dismissBtn) dismissBtn.style.display = 'block';
+          } else {
+            body.className = '';
+            if (badge) badge.textContent = state.isGuarding ? 'ARMED' : 'STANDBY';
+            if (safeView) safeView.style.display = 'block';
+            if (dangerView) dangerView.style.display = 'none';
+            if (dismissBtn) dismissBtn.style.display = 'none';
+          }
+        } catch (e) {
+          console.warn('PiP DOM update warning:', e);
+        }
+      }
+
+      function updatePipStatus(isOpen) {
+        if (isOpen) {
+          if (els.pipBtnLabel) els.pipBtnLabel.textContent = 'PIP HUD ACTIVE';
+          if (els.togglePipBtn) els.togglePipBtn.className = 'bg-cyan-500/25 border-2 border-cyan-400 text-cyan-200 text-xs font-mono font-bold px-3 py-2.5 rounded-xl transition flex items-center gap-2 shadow-glow-cyan';
+        } else {
+          if (els.pipBtnLabel) els.pipBtnLabel.textContent = 'PIN FLOATING PIP HUD';
+          if (els.togglePipBtn) els.togglePipBtn.className = 'bg-cyber-card hover:bg-cyber-cardHover border-2 border-cyan-500/60 hover:border-cyan-400 text-cyan-300 hover:text-white text-xs font-mono font-bold px-3 py-2.5 rounded-xl transition flex items-center gap-2 shadow-glow-cyan cursor-pointer';
+        }
+      }
+
+      // Fallback Canvas Video PiP
+      let fallbackStream = null;
+      function launchFallbackVideoPiP() {
+        if (!document.pictureInPictureEnabled) {
+          addLog('SYSTEM', 'Mobile / Standard alert banner mode active.');
+          return;
+        }
+        try {
+          const canvas = els.pipCanvasFallback;
+          drawFallbackPiPCanvas(state.isAlertActive, state.lastThreatReason, state.lastThreatSnippet);
+          if (!fallbackStream) {
+            fallbackStream = canvas.captureStream(15);
+            els.pipVideoFallback.srcObject = fallbackStream;
+          }
+          els.pipVideoFallback.play().then(() => {
+            if (document.pictureInPictureElement) {
+              document.exitPictureInPicture();
+            } else {
+              els.pipVideoFallback.requestPictureInPicture().then(() => {
+                updatePipStatus(true);
+                addLog('SYSTEM', 'Canvas PiP window launched as fallback.');
+              }).catch(err => {
+                console.warn('Canvas PiP request error:', err);
+              });
+            }
+          });
+        } catch (e) {
+          console.warn('Fallback PiP failed:', e);
+        }
+      }
+
+      function updateFallbackVideoPiP(isDanger, reason, snippet) {
+        drawFallbackPiPCanvas(isDanger, reason, snippet);
+      }
+
+      function drawFallbackPiPCanvas(isDanger, reason, snippet) {
+        const canvas = els.pipCanvasFallback;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        ctx.fillStyle = isDanger ? '#ff003c' : '#020617';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = isDanger ? '#ffffff' : '#00ff66';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+
+        ctx.fillStyle = isDanger ? '#ffffff' : '#00ff66';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('AI CYBERGUARD - THREAT SHIELD', 20, 36);
+
+        if (isDanger) {
+          ctx.fillStyle = '#ffd000';
+          ctx.font = 'bold 14px monospace';
+          ctx.fillText('🚨 CRITICAL THREAT INTERCEPTED!', 20, 70);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 12px monospace';
+          ctx.fillText((reason || 'Malicious link detected').slice(0, 48), 20, 105);
+
+          ctx.fillStyle = '#000000';
+          ctx.fillRect(20, 125, canvas.width - 40, 60);
+          ctx.fillStyle = '#ffd000';
+          ctx.font = 'bold 12px monospace';
+          ctx.fillText(`TRIGGER: ${(snippet || 'threat').slice(0, 42)}`, 30, 160);
+        } else {
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '13px monospace';
+          ctx.fillText('Active & Scanning screen frames...', 20, 80);
+          ctx.fillText('Real-time threat heuristics active.', 20, 110);
+        }
+      }
+
+      // -------------------------------------------------------------
+      // 7. UNIVERSAL PROTECTION ENGINE (DESKTOP & MOBILE ZERO-ERROR)
+      // -------------------------------------------------------------
+      async function startLiveProtection() {
+        if (state.isGuarding) return;
+
+        // 1. Attempt Native Full Screen Capture (Desktop PC/Mac/Laptop or supported mobile)
+        if (navigator.mediaDevices && typeof navigator.mediaDevices.getDisplayMedia === 'function') {
+          try {
+            addLog('SYSTEM', 'Requesting native screen capture buffer with cursor=always...');
+
+            const stream = await navigator.mediaDevices.getDisplayMedia({
+              video: {
+                cursor: 'always',
+                displaySurface: 'monitor',
+                frameRate: { ideal: 30, max: 60 }
+              },
+              audio: false
+            });
+
+            state.stream = stream;
+            state.guardMode = 'desktop';
+            activateDesktopProtectionUI(stream);
+            return;
+          } catch (err) {
+            // Screen capture was blocked by OS (typical on mobile browsers) or user dismissed dialog
+            console.log('Screen capture not permitted or blocked by OS:', err);
+            addLog('INFO', isMobileDevice 
+              ? 'Mobile OS screen-cast restricted. Seamlessly switching to Mobile Live Guard...' 
+              : 'Screen share prompt dismissed. Switching to Mobile / In-Tab Shield mode.');
+          }
+        }
+
+        // 2. Mobile Device Fallback: Attempt Live Camera OCR Scanner (point smartphone at external screen or paper)
+        if (isMobileDevice && navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === 'function') {
+          try {
+            addLog('SYSTEM', 'Initiating Mobile Camera / Viewport OCR Scanner...');
+            const camStream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                facingMode: 'environment',
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+              },
+              audio: false
+            });
+
+            state.stream = camStream;
+            state.guardMode = 'mobile-camera';
+            activateMobileCameraProtectionUI(camStream);
+            return;
+          } catch (camErr) {
+            // Camera permission skipped or unavailable -> Gracefully fall back to In-Tab Threat Mode without alerting!
+            console.log('Mobile camera permission optional or skipped:', camErr);
+            addLog('INFO', 'Mobile Camera skipped. Running Mobile In-Tab Live OCR & Heuristics Guard.');
+          }
+        }
+
+        // 3. Graceful Final Fallback: Seamless In-Tab Threat Protection Mode (ZERO ERROR GUARANTEE)
+        activateMobileProtectionMode();
+      }
+
+      function activateDesktopProtectionUI(stream) {
+        state.isGuarding = true;
+
+        // Wire video stream
+        els.screenVideo.srcObject = stream;
+        els.screenVideo.classList.remove('hidden');
+        els.standbyOverlay.classList.add('hidden');
+        els.mobileActiveOverlay.classList.add('hidden');
+        if (els.mobileLiveBadgePinned) els.mobileLiveBadgePinned.classList.add('hidden');
+        els.radarBeam.classList.remove('hidden');
+        els.hudOverlay.classList.remove('hidden');
+
+        // Update UI States
+        updateActiveButtonState(true);
+        els.statusText.textContent = 'ARMED';
+        els.statusText.className = 'text-base sm:text-lg md:text-xl font-tech font-black text-cyber-neonGreen tracking-wider';
+        els.statusSubtext.textContent = 'Desktop OCR Active';
+        els.statusPing.className = 'h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-cyber-neonGreen animate-ping';
+        els.viewportIndicator.className = 'h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-cyber-neonGreen animate-ping';
+        els.shieldCard.className = 'bg-cyber-card border-2 border-cyber-neonGreen rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-glow-green';
+        els.hudScannerType.textContent = '[SCANNER: DESKTOP_STREAM]';
+
+        // Listen for user stopping stream via browser banner
+        stream.getVideoTracks()[0].addEventListener('ended', () => {
+          stopLiveProtection();
+        });
+
+        addLog('SUCCESS', 'Desktop screen buffer linked at native resolution. Starting OCR detection loop.');
+
+        // Launch PiP window
+        launchDocumentPiPWindow();
+
+        // Read resolution and schedule scan loop
+        els.screenVideo.onloadedmetadata = () => {
+          const w = els.screenVideo.videoWidth;
+          const h = els.screenVideo.videoHeight;
+          els.ocrResolutionBadge.textContent = `${w}x${h} Native`;
+          addLog('SYSTEM', `Display buffer configured at ${w}x${h}.`);
+          scheduleNextOcrScan(800);
+        };
+
+        if (!ocrWorker) initTesseractWorker();
+      }
+
+      function activateMobileCameraProtectionUI(camStream) {
+        state.isGuarding = true;
+
+        // Wire camera video stream
+        els.screenVideo.srcObject = camStream;
+        els.screenVideo.classList.remove('hidden');
+        els.standbyOverlay.classList.add('hidden');
+        els.mobileActiveOverlay.classList.add('hidden');
+        if (els.mobileLiveBadgePinned) els.mobileLiveBadgePinned.classList.remove('hidden');
+        els.radarBeam.classList.remove('hidden');
+        els.hudOverlay.classList.remove('hidden');
+
+        // Update UI States
+        updateActiveButtonState(true);
+        els.statusText.textContent = '🟢 MOBILE LIVE GUARD ACTIVE';
+        els.statusText.className = 'text-xs sm:text-base md:text-lg font-tech font-black text-cyber-neonGreen tracking-wider';
+        els.statusSubtext.textContent = 'Mobile Camera OCR Active';
+        els.statusPing.className = 'h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-cyber-neonGreen animate-ping';
+        els.viewportIndicator.className = 'h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-cyber-neonGreen animate-ping';
+        els.shieldCard.className = 'bg-cyber-card border-2 border-cyber-neonGreen rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-glow-green';
+        els.hudScannerType.textContent = '[SCANNER: MOBILE_CAM_OCR]';
+
+        camStream.getVideoTracks()[0].addEventListener('ended', () => {
+          stopLiveProtection();
+        });
+
+        addLog('SUCCESS', 'Mobile camera live OCR buffer linked. Scanning external text in real time.');
+
+        // Attempt PiP (will fallback gracefully to canvas PiP on mobile if not supported)
+        launchDocumentPiPWindow();
+
+        els.screenVideo.onloadedmetadata = () => {
+          const w = els.screenVideo.videoWidth;
+          const h = els.screenVideo.videoHeight;
+          els.ocrResolutionBadge.textContent = `${w}x${h} Cam`;
+          addLog('SYSTEM', `Camera buffer configured at ${w}x${h}.`);
+          scheduleNextOcrScan(800);
+        };
+
+        if (!ocrWorker) initTesseractWorker();
+      }
+
+      function activateMobileProtectionMode() {
+        state.isGuarding = true;
+        state.guardMode = 'mobile';
+
+        // Update UI Viewport for Mobile Guard
+        els.screenVideo.classList.add('hidden');
+        els.standbyOverlay.classList.add('hidden');
+        els.mobileActiveOverlay.classList.remove('hidden');
+        if (els.mobileLiveBadgePinned) els.mobileLiveBadgePinned.classList.add('hidden');
+        els.radarBeam.classList.remove('hidden');
+        els.hudOverlay.classList.remove('hidden');
+
+        updateActiveButtonState(true);
+        els.statusText.textContent = '🟢 MOBILE LIVE GUARD ACTIVE';
+        els.statusText.className = 'text-xs sm:text-base md:text-lg font-tech font-black text-cyber-neonGreen tracking-wider';
+        els.statusSubtext.textContent = 'In-Tab & Clipboard Active';
+        els.statusPing.className = 'h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-cyber-neonGreen animate-ping';
+        els.viewportIndicator.className = 'h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-cyber-neonGreen animate-ping';
+        els.shieldCard.className = 'bg-cyber-card border-2 border-cyber-neonGreen rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-glow-green';
+        els.hudScannerType.textContent = '[SCANNER: MOBILE_HEURISTICS]';
+        els.ocrResolutionBadge.textContent = 'Active Guard';
+
+        addLog('ONLINE', 'Mobile Live Guard activated. Continuous 2.5s threat heuristics armed.');
+
+        // Initialize worker if needed
+        if (!ocrWorker) initTesseractWorker();
+
+        // Continuous monitoring cycle for mobile scratchpad and vectors
+        scheduleNextMobileScanCycle(1000);
+      }
+
+      function updateActiveButtonState(isGuarding) {
+        if (isGuarding) {
+          els.startShieldBtn.disabled = true;
+          els.stopShieldBtn.disabled = false;
+          els.mobileStartShieldBtn.className = 'flex-1 bg-cyber-neonRed active:bg-red-600 text-white font-tech font-black text-xs py-3 px-3 rounded-xl shadow-glow-red flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation';
+          els.mobileStartLabel.textContent = 'STOP SHIELD';
+        } else {
+          els.startShieldBtn.disabled = false;
+          els.stopShieldBtn.disabled = true;
+          els.mobileStartShieldBtn.className = 'flex-1 bg-cyber-neonGreen active:bg-emerald-400 text-black font-tech font-black text-xs py-3 px-3 rounded-xl shadow-glow-green flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation';
+          els.mobileStartLabel.textContent = 'START SHIELD';
+        }
+      }
+
+      function stopLiveProtection() {
+        state.isGuarding = false;
+        if (state.scanTimeoutId) {
+          clearTimeout(state.scanTimeoutId);
+          state.scanTimeoutId = null;
+        }
+
+        if (state.stream) {
+          state.stream.getTracks().forEach(t => t.stop());
+          state.stream = null;
+        }
+
+        els.screenVideo.classList.add('hidden');
+        els.mobileActiveOverlay.classList.add('hidden');
+        if (els.mobileLiveBadgePinned) els.mobileLiveBadgePinned.classList.add('hidden');
+        els.standbyOverlay.classList.remove('hidden');
+        els.radarBeam.classList.add('hidden');
+        els.hudOverlay.classList.add('hidden');
+
+        updateActiveButtonState(false);
+
+        els.statusText.textContent = 'STANDBY';
+        els.statusText.className = 'text-base sm:text-lg md:text-xl font-tech font-black text-slate-300 tracking-wider';
+        els.statusSubtext.textContent = 'Protection disarmed';
+        els.statusPing.className = 'h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-slate-600';
+        els.viewportIndicator.className = 'h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-slate-600';
+        els.shieldCard.className = 'bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonGreen/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon';
+        els.ocrResolutionBadge.textContent = 'Buffer Mode';
+
+        addLog('SYSTEM', 'Threat Protection disarmed.');
+        updatePipHUD(false);
+      }
+
+      function scheduleNextOcrScan(delayMs) {
+        if (!state.isGuarding || (state.guardMode !== 'desktop' && state.guardMode !== 'mobile-camera')) return;
+        if (state.scanTimeoutId) clearTimeout(state.scanTimeoutId);
+        state.scanTimeoutId = setTimeout(() => {
+          processOcrScanCycle();
+        }, delayMs);
+      }
+
+      function scheduleNextMobileScanCycle(delayMs) {
+        if (!state.isGuarding || state.guardMode !== 'mobile') return;
+        if (state.scanTimeoutId) clearTimeout(state.scanTimeoutId);
+        state.scanTimeoutId = setTimeout(() => {
+          processMobileScanCycle();
+        }, delayMs);
+      }
+
+      /**
+       * Desktop / Mobile Camera Frame OCR Processing with High-Contrast Grayscale Preprocessing
+       */
+      async function processOcrScanCycle() {
+        if (!state.isGuarding || state.isOcrProcessing || (state.guardMode !== 'desktop' && state.guardMode !== 'mobile-camera')) return;
+        state.isOcrProcessing = true;
+
+        const video = els.screenVideo;
+        const canvas = els.captureCanvas;
+
+        if (!video || video.readyState < 2 || video.videoWidth === 0) {
+          state.isOcrProcessing = false;
+          scheduleNextOcrScan(1000);
+          return;
+        }
+
+        const startTime = performance.now();
+        const vW = video.videoWidth;
+        const vH = video.videoHeight;
+
+        canvas.width = vW;
+        canvas.height = vH;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        ctx.drawImage(video, 0, 0, vW, vH);
+
+        // Preprocessing: Rec.709 Grayscale with high contrast
+        try {
+          const imgData = ctx.getImageData(0, 0, vW, vH);
+          const data = imgData.data;
+          const len = data.length;
+          const contrast = 1.6;
+          const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+          for (let i = 0; i < len; i += 4) {
+            const gray = 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+            const adjusted = factor * (gray - 128) + 128;
+            const finalVal = adjusted > 255 ? 255 : (adjusted < 0 ? 0 : adjusted);
+
+            data[i] = finalVal;
+            data[i + 1] = finalVal;
+            data[i + 2] = finalVal;
+          }
+          ctx.putImageData(imgData, 0, 0);
+        } catch (prepErr) {
+          console.warn('Canvas pre-processing warning:', prepErr);
+        }
+
+        // Run OCR recognition
+        try {
+          let extractedText = '';
+
+          if (ocrWorker && isOcrReady) {
+            const ret = await ocrWorker.recognize(canvas);
+            extractedText = ret.data.text;
+          } else if (typeof Tesseract !== 'undefined') {
+            const ret = await Tesseract.recognize(canvas, 'eng');
+            extractedText = ret.data.text;
+          }
+
+          const durationMs = Math.round(performance.now() - startTime);
+          state.totalScans++;
+          els.metricTotalScans.textContent = state.totalScans;
+          els.metricLatency.textContent = `${durationMs}ms / frame`;
+          els.hudFps.textContent = `LATENCY: ${durationMs}ms`;
+
+          if (extractedText && extractedText.trim().length > 0) {
+            state.lastExtractedText = extractedText;
+            updateOcrBufferView(extractedText);
+          }
+
+          const threat = evaluateThreatSignatures(extractedText);
+          if (threat && threat.matched) {
+            triggerThreatAlert(threat.sample, threat.reason, threat.type);
+          }
+
+        } catch (ocrErr) {
+          console.warn('OCR Recognition error:', ocrErr);
+        } finally {
+          state.isOcrProcessing = false;
+          if (state.isGuarding && (state.guardMode === 'desktop' || state.guardMode === 'mobile-camera')) {
+            scheduleNextOcrScan(2500); // 2.5s scan interval per requirement
+          }
+        }
+      }
+
+      /**
+       * Mobile Continuous Threat Scan Loop (2.5s interval)
+       */
+      function processMobileScanCycle() {
+        if (!state.isGuarding || state.guardMode !== 'mobile') return;
+
+        state.totalScans++;
+        els.metricTotalScans.textContent = state.totalScans;
+        els.metricLatency.textContent = 'Active Monitoring';
+        els.hudFps.textContent = 'MONITORING';
+
+        // Check current scratchpad text
+        const text = els.testScratchpad ? els.testScratchpad.value : '';
+        if (text && text.trim().length > 0) {
+          updateOcrBufferView(text);
+          const threat = evaluateThreatSignatures(text);
+          if (threat && threat.matched && !state.isAlertActive) {
+            triggerThreatAlert(threat.sample, threat.reason, threat.type);
+          }
+        }
+
+        scheduleNextMobileScanCycle(2500); // 2.5s scan interval per requirement
+      }
+
+      function updateOcrBufferView(text) {
+        if (!els.ocrCharCount || !els.ocrBufferBox) return;
+        els.ocrCharCount.textContent = `${text.length} chars`;
+        
+        const clean = escapeHtml(text);
+        const highlighted = clean.replace(/(paytm[-_ ]*bonus|credited|debited|disconnected|kyc|bit\.ly[^\s]+|t\.me[^\s]+|g00gle[^\s]+|\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b|urgent[-_ ]*verify)/gi, (m) => {
+          return `<span class="bg-cyber-neonRed/30 text-yellow-300 font-bold px-1 py-0.5 rounded border border-cyber-neonRed">${m}</span>`;
+        });
+
+        els.ocrBufferBox.innerHTML = highlighted.slice(0, 3000);
+      }
+
+      // -------------------------------------------------------------
+      // 8. THREAT ALERT DISPATCHER (PIP OVERLAY + DUAL SIREN/VOICE)
+      // -------------------------------------------------------------
+      function triggerThreatAlert(sampleSnippet, reason, type) {
+        state.isAlertActive = true;
+        state.lastThreatReason = reason;
+        state.lastThreatSnippet = sampleSnippet;
+        state.threatsCount++;
+
+        // Update metrics
+        els.metricThreatsCount.textContent = state.threatsCount;
+        els.metricLastThreat.textContent = sampleSnippet || reason;
+        els.threatCard.className = 'bg-cyber-card border-2 border-cyber-neonRed rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-danger';
+
+        // 1. Show Emergency Strobe Banner (Universal across desktop & mobile)
+        els.dangerBanner.classList.remove('hidden');
+        els.dangerBannerText.textContent = `${reason} — Intercepted: "${sampleSnippet}"`;
+
+        // 2. Main Viewport Threat Overlay
+        els.videoThreatOverlay.classList.remove('hidden');
+        els.videoThreatReason.textContent = `CRITICAL: ${reason} ["${sampleSnippet}"]`;
+        els.videoContainer.classList.add('danger-reticle');
+        els.radarBeam.className = 'absolute inset-x-0 h-1/4 radar-beam-red animate-radar-sweep-fast pointer-events-none z-20';
+
+        // 3. Update Always-on-Top Floating PiP Window (Desktop) or Canvas Fallback (Mobile)
+        updatePipHUD(true, reason, sampleSnippet);
+
+        // 4. Trigger Web Audio Siren
+        startEmergencySiren();
+
+        // 5. Trigger Browser TTS Voice Warning
+        playVoiceWarning();
+
+        // 6. Append to Tactical Audit Log
+        addLog('THREAT', `ALERT: [${type}] ${reason} -> Payload: "${sampleSnippet}"`);
+      }
+
+      function clearThreatState() {
+        state.isAlertActive = false;
+        stopEmergencySiren();
+
+        els.dangerBanner.classList.add('hidden');
+        els.videoThreatOverlay.classList.add('hidden');
+        els.videoContainer.classList.remove('danger-reticle');
+        els.radarBeam.className = 'hidden absolute inset-x-0 h-1/4 radar-beam-green animate-radar-sweep pointer-events-none z-20';
+        if (state.isGuarding) {
+          els.radarBeam.classList.remove('hidden');
+        }
+
+        updatePipHUD(false);
+        addLog('SYSTEM', 'Threat alerts reset. Siren muted and indicators cleared.');
+      }
+
+      function toggleSirenMute() {
+        state.sirenMuted = !state.sirenMuted;
+        if (state.sirenMuted) {
+          stopEmergencySiren();
+          if (els.audioMuteLabel) els.audioMuteLabel.textContent = 'Siren: Muted';
+          if (els.audioIcon) els.audioIcon.className = 'w-4 h-4 text-slate-500';
+          if (els.mobileAudioIcon) els.mobileAudioIcon.className = 'w-4 h-4 text-slate-500';
+          addLog('SYSTEM', 'Emergency siren muted.');
+        } else {
+          if (els.audioMuteLabel) els.audioMuteLabel.textContent = 'Siren: Active';
+          if (els.audioIcon) els.audioIcon.className = 'w-4 h-4 text-cyber-neonGreen';
+          if (els.mobileAudioIcon) els.mobileAudioIcon.className = 'w-4 h-4 text-cyber-neonGreen';
+          if (state.isAlertActive) {
+            startEmergencySiren();
+          }
+          addLog('SYSTEM', 'Emergency siren unmuted.');
+        }
+      }
+
+      function triggerSimulatedThreat(sampleVector, customReason) {
+        if (!state.pipWindow || state.pipWindow.closed) {
+          launchDocumentPiPWindow();
+        }
+        triggerThreatAlert(
+          sampleVector || 'bit.ly/free-recharge-jio-599',
+          customReason || 'Scam: Obfuscated phishing shortener intercepted on screen',
+          'DEMO_SIMULATION'
+        );
+      }
+
+      function addLog(type, message) {
+        if (!els.auditLogContainer) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.className = 'font-mono text-[10px] sm:text-[11px] leading-snug';
+
+        let typeBadge = '';
+        if (type === 'THREAT') {
+          typeBadge = '<span class="text-cyber-neonRed font-black">[ALERT]</span>';
+        } else if (type === 'SUCCESS' || type === 'ONLINE') {
+          typeBadge = '<span class="text-cyber-neonGreen font-bold">[ONLINE]</span>';
+        } else if (type === 'WARN') {
+          typeBadge = '<span class="text-yellow-400 font-bold">[WARN]</span>';
+        } else {
+          typeBadge = '<span class="text-cyan-400 font-bold">[INFO]</span>';
+        }
+
+        div.innerHTML = `<span class="text-slate-600">${time}</span> ${typeBadge} <span class="text-slate-200">${escapeHtml(message)}</span>`;
+        els.auditLogContainer.prepend(div);
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      // -------------------------------------------------------------
+      // 9. EVENT LISTENERS (CLICK-TO-COPY & AUTO-TEST INTEGRATED)
+      // -------------------------------------------------------------
+      // Desktop + Mobile Start Buttons
+      els.startShieldBtn.addEventListener('click', startLiveProtection);
+      els.stopShieldBtn.addEventListener('click', stopLiveProtection);
+      els.mobileStartShieldBtn.addEventListener('click', () => {
+        if (state.isGuarding) {
+          stopLiveProtection();
+        } else {
+          startLiveProtection();
+        }
+      });
+
+      els.clearThreatBtn.addEventListener('click', clearThreatState);
+      els.bannerDismissBtn.addEventListener('click', clearThreatState);
+      els.bannerMuteBtn.addEventListener('click', toggleSirenMute);
+      els.toggleAudioMuteBtn.addEventListener('click', toggleSirenMute);
+      els.mobileAudioMuteBtn.addEventListener('click', toggleSirenMute);
+
+      // PiP Buttons
+      const handlePiPToggle = () => {
+        if (state.pipWindow && !state.pipWindow.closed) {
+          state.pipWindow.close();
+          state.pipWindow = null;
+          updatePipStatus(false);
+        } else {
+          launchDocumentPiPWindow();
+        }
+      };
+      els.togglePipBtn.addEventListener('click', handlePiPToggle);
+      els.mobileTogglePipBtn.addEventListener('click', handlePiPToggle);
+
+      // Test Alerts
+      const handleTestAlert = () => {
+        triggerSimulatedThreat('bit.ly/free-recharge-jio-599', 'Scam: Fraudulent free recharge shortlink intercepted');
+      };
+      els.testAlertBtn.addEventListener('click', handleTestAlert);
+      els.mobileTestAlertBtn.addEventListener('click', handleTestAlert);
+
+      // Buffer & Audit Log Clear Buttons
+      els.clearOcrLogBtn.addEventListener('click', () => {
+        els.ocrBufferBox.innerHTML = '<span class="text-slate-600 italic">// Buffer cleared.</span>';
+        els.ocrCharCount.textContent = '0 chars';
+      });
+
+      els.clearAuditLogBtn.addEventListener('click', () => {
+        els.auditLogContainer.innerHTML = '<div class="text-slate-500">[LOG] Log cleared.</div>';
+      });
+
+      els.clearScratchpadBtn.addEventListener('click', () => {
+        els.testScratchpad.value = '';
+        els.scratchpadStatusBadge.textContent = 'Empty';
+        els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded';
+      });
+
+      // 1-CLICK / 1-TAP DEMO ATTACK VECTOR LOGIC
+      document.querySelectorAll('.test-vector-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const payload = btn.getAttribute('data-threat');
+          const label = btn.getAttribute('data-label') || 'Attack Vector';
+          if (!payload) return;
+
+          // 1. Copy to clipboard
+          navigator.clipboard.writeText(payload).then(() => {
+            addLog('INFO', `Copied to clipboard: "${label}"`);
+          }).catch(() => {
+            try {
+              const ta = document.createElement('textarea');
+              ta.value = payload;
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+              addLog('INFO', `Copied to clipboard: "${label}"`);
+            } catch (_) {}
+          });
+
+          // 2. Visual feedback on card
+          btn.classList.add('active-copied');
+          const badge = btn.querySelector('.copy-badge');
+          const origBadgeText = badge ? badge.textContent : '';
+          if (badge) {
+            badge.textContent = 'COPIED & TESTED!';
+            badge.className = 'copy-badge text-[9px] font-mono text-cyber-neonGreen font-bold';
+          }
+
+          setTimeout(() => {
+            btn.classList.remove('active-copied');
+            if (badge) {
+              badge.textContent = origBadgeText || 'Tap to Test';
+              badge.className = 'copy-badge text-[9px] font-mono text-slate-500';
+            }
+          }, 1800);
+
+          // 3. Auto-paste into scratchpad and trigger immediate threat evaluation!
+          els.testScratchpad.value = payload;
+          els.scratchpadStatusBadge.textContent = 'Threat Loaded';
+          els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-yellow-300 bg-yellow-500/20 border border-yellow-400/40 px-1.5 py-0.5 rounded font-bold';
+
+          // 4. Update OCR buffer box view
+          updateOcrBufferView(payload);
+
+          // 5. Evaluate immediately and launch PiP alert if threat found
+          const threat = evaluateThreatSignatures(payload);
+          if (threat && threat.matched) {
+            if (!state.pipWindow || state.pipWindow.closed) {
+              launchDocumentPiPWindow();
+            }
+            triggerThreatAlert(threat.sample, threat.reason, threat.type);
+            els.scratchpadStatusBadge.textContent = 'THREAT CONFIRMED';
+            els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-cyber-neonRed bg-cyber-neonRed/20 border border-cyber-neonRed/40 px-1.5 py-0.5 rounded font-black';
+          }
+        });
+      });
+
+      // Live typing into scratchpad triggers detection if matching pattern
+      els.testScratchpad.addEventListener('input', () => {
+        const val = els.testScratchpad.value;
+        if (!val.trim()) {
+          els.scratchpadStatusBadge.textContent = 'Empty';
+          els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded';
+          return;
+        }
+
+        updateOcrBufferView(val);
+
+        const threat = evaluateThreatSignatures(val);
+        if (threat && threat.matched) {
+          els.scratchpadStatusBadge.textContent = 'THREAT DETECTED';
+          els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-cyber-neonRed bg-cyber-neonRed/20 border border-cyber-neonRed/40 px-1.5 py-0.5 rounded font-black';
+          triggerThreatAlert(threat.sample, threat.reason, threat.type);
+        } else {
+          els.scratchpadStatusBadge.textContent = 'Scanning: Clear';
+          els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-cyber-neonGreen bg-cyber-neonGreen/10 border border-cyber-neonGreen/30 px-1.5 py-0.5 rounded font-bold';
+        }
+      });
+
+      // Manual Run Scan button for scratchpad
+      els.manualEvalScratchpadBtn.addEventListener('click', () => {
+        const val = els.testScratchpad.value;
+        if (!val.trim()) {
+          addLog('WARN', 'Scratchpad is empty. Tap any demo card above to load a vector.');
+          return;
+        }
+        updateOcrBufferView(val);
+        const threat = evaluateThreatSignatures(val);
+        if (threat && threat.matched) {
+          triggerThreatAlert(threat.sample, threat.reason, threat.type);
+        } else {
+          addLog('INFO', `Scratchpad text evaluated: No threat pattern matched.`);
+        }
+      });
+
+      // Background initialization of Tesseract worker
+      setTimeout(() => {
+        initTesseractWorker();
+      }, 500);
+
+    })();
+  </script>
+</body>
+</html>

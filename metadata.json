@@ -1,0 +1,7 @@
+{
+  "name": "AI CyberGuard - Team Syntax Squad",
+  "description": "High-resolution full-screen OCR threat detection by Team Syntax Squad. Features Document Picture-in-Picture always-on-top alert overlay, Web Audio siren, text-to-speech voice warnings, and 100% client-side security scanning.",
+  "requestFramePermissions": ["display-capture", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
