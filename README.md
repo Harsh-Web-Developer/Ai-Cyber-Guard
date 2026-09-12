@@ -31,15 +31,3 @@ AI CyberGuard is a **100% Zero-API local client-side security scanner** designed
 
 ---
 
-## 📦 Installation & Local Setup
-
-### Option 1: Standalone Single File (Easiest)
-Simply open the `index.html` file in any modern web browser (Google Chrome or Microsoft Edge recommended for Document PiP support).
-
-### Option 2: Run via Node.js / Vite
-If running in a Vite React/Vanilla template:
-
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/your-username/ai-cyberguard.git](https://github.com/your-username/ai-cyberguard.git)
-   cd ai-cyberguard
