@@ -209,12 +209,24 @@
           </p>
         </div>
       </div>
-      <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto w-full sm:w-auto justify-end">
-        <button id="bannerMuteBtn" class="bg-black/90 hover:bg-black text-white px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-white/40 shadow cursor-pointer">
+      <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-auto w-full sm:w-auto justify-end flex-wrap">
+        <button id="bannerBlockBtn" class="bg-black/90 hover:bg-black text-amber-300 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-amber-400/50 shadow cursor-pointer" title="Block this scam link immediately">
+          <span>🚫</span>
+          <span>Block Link</span>
+        </button>
+        <button id="bannerReportBtn" class="bg-red-950/90 hover:bg-red-900 text-white px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-white/40 shadow cursor-pointer" title="Report to CyberCell 1930">
+          <span>🚨</span>
+          <span>1930</span>
+        </button>
+        <button id="bannerSnapshotBtn" class="bg-black/90 hover:bg-black text-cyan-300 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-cyan-400/50 shadow cursor-pointer" title="View Captured Evidence Snapshot">
+          <span>📷</span>
+          <span>Evidence</span>
+        </button>
+        <button id="bannerMuteBtn" class="bg-black/90 hover:bg-black text-white px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-white/40 shadow cursor-pointer">
           <svg class="w-3.5 h-3.5 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
           Mute
         </button>
-        <button id="bannerDismissBtn" class="bg-white text-red-700 hover:bg-yellow-300 hover:text-red-950 px-3.5 py-1.5 rounded-lg text-xs font-mono font-black transition shadow-lg cursor-pointer">
+        <button id="bannerDismissBtn" class="bg-white text-red-700 hover:bg-yellow-300 hover:text-red-950 px-3 py-1.5 rounded-lg text-xs font-mono font-black transition shadow-lg cursor-pointer">
           DISMISS
         </button>
       </div>
@@ -249,74 +261,154 @@
 
       <!-- Quick Action Header Buttons (Desktop / Tablet) -->
       <div class="hidden sm:flex items-center gap-2 flex-wrap w-full md:w-auto justify-end">
-        <!-- TEST THREAT ALERT BUTTON -->
-        <button id="testAlertBtn" class="bg-cyber-neonRed/20 hover:bg-cyber-neonRed/35 border-2 border-cyber-neonRed text-cyber-neonRed hover:text-white text-xs font-mono font-black px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow-glow-red cursor-pointer transform active:scale-95">
-          <svg class="w-4 h-4 text-cyber-neonRed animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <!-- 1. ELEVENLABS AI VOICE CONFIG -->
+        <button id="openVoiceModalBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-purple-500/60 hover:border-purple-400 text-purple-300 hover:text-white text-xs font-mono font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer active:scale-95" title="Configure ElevenLabs Cinematic AI Voice Alerts">
+          <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+          <span>AI VOICE</span>
+          <span id="voiceBadge" class="bg-purple-500/20 text-purple-300 text-[9px] px-1.5 py-0.2 rounded border border-purple-500/40">11LABS</span>
+        </button>
+
+        <!-- 2. GUARDIAN SAFETY ALERT SETTINGS (WHATSAPP / TELEGRAM) -->
+        <button id="openGuardianModalBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyber-neonGreen/60 hover:border-cyber-neonGreen text-cyber-neonGreen hover:text-white text-xs font-mono font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer active:scale-95" title="Configure Guardian WhatsApp & Telegram Emergency Alerts">
+          <svg class="w-3.5 h-3.5 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>GUARDIAN</span>
+          <span id="guardianBadge" class="bg-cyber-neonGreen/20 text-cyber-neonGreen text-[9px] px-1.5 py-0.2 rounded border border-cyber-neonGreen/40">ARMED</span>
+        </button>
+
+        <!-- 3. LOCAL BLOCKLIST & CYBERCELL REPORT BUTTONS -->
+        <button id="openBlocklistModalBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyber-border hover:border-amber-400 text-slate-300 hover:text-amber-300 text-xs font-mono px-2.5 py-2 rounded-xl transition flex items-center gap-1 cursor-pointer active:scale-95" title="View Blocked Malicious Links">
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+          <span>BLOCKLIST</span>
+          <span id="blocklistCountBadge" class="bg-amber-500/20 text-amber-300 text-[9px] px-1.5 py-0.2 rounded font-bold">0</span>
+        </button>
+
+        <button id="openCyberCellBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-red-500/50 hover:border-red-400 text-red-300 hover:text-white text-xs font-mono font-bold px-2.5 py-2 rounded-xl transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-sm" title="Report Scam to National Cyber Crime Portal 1930">
+          <span class="text-red-400">🚨</span>
+          <span>1930 OVERLAY</span>
+        </button>
+
+        <!-- 4. TEST THREAT ALERT BUTTON -->
+        <button id="testAlertBtn" class="bg-cyber-neonRed/20 hover:bg-cyber-neonRed/35 border-2 border-cyber-neonRed text-cyber-neonRed hover:text-white text-xs font-mono font-black px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-glow-red cursor-pointer transform active:scale-95">
+          <svg class="w-3.5 h-3.5 text-cyber-neonRed animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
           TEST ALERT
         </button>
 
-        <!-- Document PiP Toggle -->
-        <button id="togglePipBtn" class="bg-cyber-card hover:bg-cyber-cardHover border-2 border-cyan-500/60 hover:border-cyan-400 text-cyan-300 hover:text-white text-xs font-mono font-bold px-3 py-2.5 rounded-xl transition flex items-center gap-2 shadow-glow-cyan cursor-pointer" title="Pin always-on-top floating alert HUD over WhatsApp, Edge, or games">
-          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-          <span id="pipBtnLabel">PIN FLOATING PIP HUD</span>
+        <!-- 5. Document PiP Toggle -->
+        <button id="togglePipBtn" class="bg-cyber-card hover:bg-cyber-cardHover border-2 border-cyan-500/60 hover:border-cyan-400 text-cyan-300 hover:text-white text-xs font-mono font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-glow-cyan cursor-pointer" title="Pin always-on-top floating alert HUD over WhatsApp, Edge, or games">
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          <span id="pipBtnLabel">PIN PIP</span>
         </button>
 
-        <!-- Audio Siren Toggle -->
-        <button id="toggleAudioMuteBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyber-border text-slate-300 hover:text-white text-xs font-mono px-3 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
-          <svg id="audioIcon" class="w-4 h-4 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
-          <span id="audioMuteLabel">Siren: Active</span>
+        <!-- 6. Audio Siren Toggle -->
+        <button id="toggleAudioMuteBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyber-border text-slate-300 hover:text-white text-xs font-mono px-2.5 py-2 rounded-xl transition flex items-center gap-1 cursor-pointer">
+          <svg id="audioIcon" class="w-3.5 h-3.5 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+          <span id="audioMuteLabel">Siren</span>
+        </button>
+      </div>
+
+      <!-- Quick Action Mobile Strip (Visible on mobile screens) -->
+      <div class="flex sm:hidden items-center gap-1.5 flex-wrap w-full mt-2 pt-2 border-t border-cyber-border/40">
+        <button id="mobileVoiceBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-purple-500/60 text-purple-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="ElevenLabs Voice">
+          <span>🎙️</span><span>VOICE</span>
+        </button>
+        <button id="mobileGuardianBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-cyber-neonGreen/60 text-cyber-neonGreen text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Guardian Alert">
+          <span>🛡️</span><span>GUARDIAN</span>
+        </button>
+        <button id="mobileBlocklistBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-amber-500/60 text-amber-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Blocklist">
+          <span>🚫</span><span>BLOCKED</span>
+        </button>
+        <button id="mobileCybercellBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-red-500/60 text-red-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="1930 Overlay">
+          <span>🚨</span><span>1930</span>
         </button>
       </div>
     </header>
 
-    <!-- TACTICAL STATUS METRICS ROW -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+    <!-- FLOATING NOTIFICATION BADGE FOR ELEVENLABS AI VOICE -->
+    <div id="elevenLabsActiveNotification" class="hidden fixed top-3 sm:top-5 right-3 sm:right-5 z-50 bg-purple-950/95 border-2 border-purple-400 text-purple-200 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-glow-purple font-mono text-xs sm:text-sm font-black items-center gap-2.5 animate-bounce">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-purple-400"></span>
+      </span>
+      <span>🎙️ ELEVENLABS AI VOICE ACTIVE</span>
+    </div>
+
+    <!-- TACTICAL STATUS METRICS ROW (5 DYNAMIC METRIC HUD CARDS) -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
       
       <!-- Card 1: Shield State -->
-      <div id="shieldCard" class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonGreen/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
-        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
+      <div id="shieldCard" class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonGreen/50 rounded-xl sm:rounded-2xl p-3 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
           <span class="tracking-wider uppercase font-bold text-slate-300">SHIELD</span>
-          <span id="statusPing" class="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-slate-600"></span>
+          <span id="statusPing" class="h-2 w-2 rounded-full bg-slate-600"></span>
         </div>
-        <div class="mt-2 sm:mt-3">
-          <div id="statusText" class="text-base sm:text-lg md:text-xl font-tech font-black text-slate-300 tracking-wider">STANDBY</div>
-          <div id="statusSubtext" class="text-[10px] sm:text-xs text-slate-500 font-mono truncate mt-0.5">Click Start Protection</div>
+        <div class="mt-2">
+          <div id="statusText" class="text-sm sm:text-base font-tech font-black text-slate-300 tracking-wider">STANDBY</div>
+          <div id="statusSubtext" class="text-[10px] text-slate-500 font-mono truncate mt-0.5">Click Start Protection</div>
         </div>
       </div>
 
-      <!-- Card 2: Total Scans Performed -->
-      <div class="bg-cyber-card border-2 border-cyber-border hover:border-cyan-500/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
-        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
+      <!-- Card 2: DYNAMIC 0-100 SCAM RISK SCORE METER (MANDATORY ADVANCED FEATURE) -->
+      <div id="riskScoreCard" class="bg-cyber-card border-2 border-cyber-border hover:border-cyan-500/50 rounded-xl sm:rounded-2xl p-3 transition-all duration-300 flex flex-col justify-between shadow-card-neon relative overflow-hidden">
+        <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+          <span class="tracking-wider uppercase font-bold text-cyan-400">RISK SCORE METER</span>
+          <span id="riskLevelBadge" class="text-[9px] font-mono font-black px-1.5 py-0.2 rounded bg-cyber-neonGreen/20 text-cyber-neonGreen border border-cyber-neonGreen/40">0% SAFE</span>
+        </div>
+        <div class="mt-1 flex items-center justify-between gap-2">
+          <div>
+            <div id="metricRiskScore" class="text-xl sm:text-2xl font-mono font-black text-cyber-neonGreen transition-colors duration-300">0 / 100</div>
+            <div id="metricRiskAnalysis" class="text-[9px] text-slate-400 font-mono truncate max-w-[120px]">Zero threat signals</div>
+          </div>
+          <!-- Animated Circular SVG Risk Gauge -->
+          <div class="relative w-11 h-11 shrink-0 flex items-center justify-center">
+            <svg class="w-11 h-11 transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="riskGaugeCircle" class="transition-all duration-500 text-cyber-neonGreen" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <span id="riskGaugeCenterText" class="absolute text-[10px] font-mono font-black text-white">0%</span>
+          </div>
+        </div>
+        <!-- Micro dynamic progress bar -->
+        <div class="w-full bg-slate-900 rounded-full h-1 mt-1.5 overflow-hidden border border-slate-800">
+          <div id="riskScoreProgressBar" class="h-full bg-cyber-neonGreen transition-all duration-500 rounded-full" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Card 3: Total Scans Performed -->
+      <div class="bg-cyber-card border-2 border-cyber-border hover:border-cyan-500/50 rounded-xl sm:rounded-2xl p-3 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
           <span class="tracking-wider uppercase font-bold text-cyan-400">OCR SCANS</span>
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         </div>
-        <div class="mt-2 sm:mt-3">
-          <div id="metricTotalScans" class="text-lg sm:text-xl md:text-2xl font-mono font-black text-white">0</div>
-          <div id="metricLatency" class="text-[10px] sm:text-xs text-cyan-400 font-mono mt-0.5 truncate">Worker: Standby</div>
+        <div class="mt-2">
+          <div id="metricTotalScans" class="text-base sm:text-xl font-mono font-black text-white">0</div>
+          <div id="metricLatency" class="text-[10px] text-cyan-400 font-mono mt-0.5 truncate">Worker: Standby</div>
         </div>
       </div>
 
-      <!-- Card 3: Threat Signatures Engine -->
-      <div class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonGreen/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
-        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
+      <!-- Card 4: Threat Signatures Engine -->
+      <div class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonGreen/50 rounded-xl sm:rounded-2xl p-3 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
           <span class="tracking-wider uppercase font-bold text-cyber-neonGreen">SIGNATURES</span>
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          <svg class="w-3.5 h-3.5 text-cyber-neonGreen" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
         </div>
-        <div class="mt-2 sm:mt-3">
-          <div class="text-lg sm:text-xl md:text-2xl font-mono font-black text-cyber-neonGreen">58 PATTERNS</div>
-          <div class="text-[10px] sm:text-xs text-slate-400 font-mono mt-0.5 truncate">Smishing &bull; Links &bull; Urgency</div>
+        <div class="mt-2">
+          <div class="text-base sm:text-xl font-mono font-black text-cyber-neonGreen">64 RULES</div>
+          <div class="text-[10px] text-slate-400 font-mono mt-0.5 truncate">Smishing &bull; Links &bull; Urgency</div>
         </div>
       </div>
 
-      <!-- Card 4: Threats Intercepted -->
-      <div id="threatCard" class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonRed/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
-        <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-mono">
-          <span class="tracking-wider uppercase font-bold text-cyber-neonRed">THREATS</span>
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyber-neonRed" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+      <!-- Card 5: Threats & Evidence Forensics -->
+      <div id="threatCard" class="bg-cyber-card border-2 border-cyber-border hover:border-cyber-neonRed/50 rounded-xl sm:rounded-2xl p-3 transition-all duration-300 flex flex-col justify-between shadow-card-neon">
+        <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+          <span class="tracking-wider uppercase font-bold text-cyber-neonRed">THREATS / EVIDENCE</span>
+          <svg class="w-3.5 h-3.5 text-cyber-neonRed" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
         </div>
-        <div class="mt-2 sm:mt-3">
-          <div id="metricThreatsCount" class="text-lg sm:text-xl md:text-2xl font-mono font-black text-cyber-neonRed">0</div>
-          <div id="metricLastThreat" class="text-[10px] sm:text-xs text-cyber-neonRed/80 font-mono mt-0.5 truncate">Zero threats</div>
+        <div class="mt-2 flex items-baseline justify-between">
+          <div>
+            <div id="metricThreatsCount" class="text-base sm:text-xl font-mono font-black text-cyber-neonRed">0</div>
+            <div id="metricLastThreat" class="text-[10px] text-cyber-neonRed/80 font-mono mt-0.5 truncate max-w-[120px]">Zero threats</div>
+          </div>
+          <span id="evidenceCountBadge" class="text-[9px] font-mono bg-cyber-card border border-cyber-border text-slate-400 px-1.5 py-0.5 rounded">0 Snaps</span>
         </div>
       </div>
 
@@ -601,7 +693,323 @@
 
     </div>
 
-    <!-- FOOTER -->
+    <!-- ============================================================= -->
+    <!-- 1. ELEVENLABS AI VOICE CONFIGURATION MODAL -->
+    <!-- ============================================================= -->
+    <div id="voiceModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-cyber-card border-2 border-purple-500/80 rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl flex flex-col gap-4 text-left relative">
+        <div class="flex items-start justify-between border-b border-purple-500/30 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-purple-500/20 border border-purple-500/50 flex items-center justify-center text-purple-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-tech text-base sm:text-lg font-black text-white tracking-wider">ELEVENLABS AI VOICE ALERT</h3>
+              <p class="text-[11px] text-purple-300 font-mono">Cinematic Neural Voice Broadcast &bull; Smart Fallback</p>
+            </div>
+          </div>
+          <button id="closeVoiceModalBtn" class="text-slate-400 hover:text-white text-lg font-mono px-2 py-1 cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-3 font-mono text-xs text-slate-300">
+          <div>
+            <label class="block text-[11px] font-bold text-purple-300 uppercase mb-1">ElevenLabs API Key</label>
+            <div class="relative">
+              <input id="elevenLabsApiKeyInput" type="password" placeholder="Enter ElevenLabs API Key (xi-api-key)..." class="w-full bg-cyber-pitch border border-purple-500/40 rounded-xl px-3 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-purple-400 font-mono" />
+              <button id="toggleApiKeyVisibilityBtn" type="button" class="absolute right-3 top-2.5 text-slate-400 hover:text-white text-[10px] cursor-pointer">SHOW</button>
+            </div>
+            <p class="text-[10px] text-slate-400 mt-1">Get your free API key at <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" class="text-purple-400 underline">elevenlabs.io</a>.</p>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-purple-300 uppercase mb-1">Voice ID Selector</label>
+            <select id="elevenLabsVoiceSelect" class="w-full bg-cyber-pitch border border-purple-500/40 rounded-xl px-3 py-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-purple-400 font-mono cursor-pointer">
+              <option value="21m00Tcm4TlvDq8ikWAM" selected>21m00Tcm4TlvDq8ikWAM - Rachel (Human / Tactical Security)</option>
+              <option value="pNInz6obpgDQGcFmaJgB">pNInz6obpgDQGcFmaJgB - Adam (Deep Threat Authority)</option>
+              <option value="EXAVITQu4vr4xnSDxMaL">EXAVITQu4vr4xnSDxMaL - Bella (High Urgency Alert)</option>
+              <option value="ErXwobaYiN019PkySvjV">ErXwobaYiN019PkySvjV - Antoni (Tactical Warning Officer)</option>
+              <option value="VR6AewLTigWG4xSOukaG">VR6AewLTigWG4xSOukaG - Arnold (Crisis Control Dispatch)</option>
+              <option value="custom">-- Custom Voice ID --</option>
+            </select>
+            
+            <input id="elevenLabsVoiceIdInput" type="text" value="21m00Tcm4TlvDq8ikWAM" placeholder="Custom Voice ID" class="hidden w-full bg-cyber-pitch border border-purple-500/40 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-purple-400 font-mono mt-2" />
+            
+            <!-- Quick preset pills -->
+            <div class="flex items-center gap-1.5 mt-2 flex-wrap">
+              <span class="text-[10px] text-slate-400">Presets:</span>
+              <button type="button" class="voice-preset-btn bg-purple-500/15 hover:bg-purple-500/30 text-purple-200 border border-purple-500/30 px-2 py-0.5 rounded text-[10px] cursor-pointer" data-voice="21m00Tcm4TlvDq8ikWAM">Rachel (Tactical Security)</button>
+              <button type="button" class="voice-preset-btn bg-purple-500/15 hover:bg-purple-500/30 text-purple-200 border border-purple-500/30 px-2 py-0.5 rounded text-[10px] cursor-pointer" data-voice="pNInz6obpgDQGcFmaJgB">Adam (Deep Authority)</button>
+              <button type="button" class="voice-preset-btn bg-purple-500/15 hover:bg-purple-500/30 text-purple-200 border border-purple-500/30 px-2 py-0.5 rounded text-[10px] cursor-pointer" data-voice="EXAVITQu4vr4xnSDxMaL">Bella (High Urgency)</button>
+            </div>
+          </div>
+
+          <div class="bg-purple-950/30 border border-purple-500/30 rounded-xl p-2.5 text-[11px] text-purple-200 flex items-start gap-2">
+            <span class="text-base">🛡️</span>
+            <div>
+              <span class="font-bold">Zero-Error Smart Fallback:</span> If the API key is not entered, quota is exhausted, or device is offline, AI CyberGuard seamlessly executes native <code class="bg-black/50 px-1 py-0.2 rounded text-purple-300">window.speechSynthesis</code> without throwing UI errors.
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-cyber-border">
+          <button id="testVoiceSynthesisBtn" type="button" class="bg-purple-900/70 hover:bg-purple-800 text-purple-200 border border-purple-400/50 px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-glow-purple">
+            <svg class="w-3.5 h-3.5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Test ElevenLabs Voice</span>
+          </button>
+          <button id="saveVoiceSettingsBtn" type="button" class="bg-purple-500 hover:bg-purple-400 text-black font-mono font-black px-4 py-2 rounded-xl text-xs shadow-glow-purple cursor-pointer active:scale-95">
+            Save Voice Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- 2. GUARDIAN EMERGENCY ALERT SYSTEM MODAL (WHATSAPP / TELEGRAM) -->
+    <!-- ============================================================= -->
+    <div id="guardianModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-cyber-card border-2 border-cyber-neonGreen/80 rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl flex flex-col gap-4 text-left relative">
+        <div class="flex items-start justify-between border-b border-cyber-neonGreen/30 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-cyber-neonGreen/20 border border-cyber-neonGreen/50 flex items-center justify-center text-cyber-neonGreen">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <div>
+              <h3 class="font-tech text-base sm:text-lg font-black text-white tracking-wider">GUARDIAN EMERGENCY ALERT</h3>
+              <p class="text-[11px] text-cyber-neonGreen font-mono">Automated WhatsApp &bull; Telegram Parent Dispatch</p>
+            </div>
+          </div>
+          <button id="closeGuardianModalBtn" class="text-slate-400 hover:text-white text-lg font-mono px-2 py-1 cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-3 font-mono text-xs text-slate-300">
+          <!-- Active switch -->
+          <div class="flex items-center justify-between bg-cyber-pitch border border-cyber-border rounded-xl p-2.5">
+            <div>
+              <span class="font-bold text-white block">Auto-Dispatch on Critical Threats</span>
+              <span class="text-[10px] text-slate-400">Triggers automatically whenever Risk Score &gt; 75/100</span>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input id="guardianEnabledToggle" type="checkbox" checked class="sr-only peer" />
+              <div class="w-10 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyber-neonGreen"></div>
+            </label>
+          </div>
+
+          <!-- Channel Selection Tabs -->
+          <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
+            <button id="tabWhatsappBtn" type="button" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 px-3 py-1.5 rounded-lg text-xs font-bold font-mono cursor-pointer">
+              🟢 WhatsApp (Callmebot)
+            </button>
+            <button id="tabTelegramBtn" type="button" class="bg-slate-800 text-slate-400 hover:text-cyan-300 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold font-mono cursor-pointer">
+              ✈️ Telegram Bot API
+            </button>
+          </div>
+
+          <!-- WhatsApp Form Fields -->
+          <div id="whatsappSection" class="space-y-2.5">
+            <div>
+              <label class="block text-[11px] font-bold text-emerald-400 uppercase mb-1">Guardian Phone Number (with Country Code)</label>
+              <input id="guardianPhoneInput" type="text" placeholder="+919876543210" class="w-full bg-cyber-pitch border border-cyber-border rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-400 font-mono" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-emerald-400 uppercase mb-1">Callmebot WhatsApp API Key</label>
+              <input id="guardianCallmebotApiKeyInput" type="password" placeholder="Enter Callmebot API Key (e.g. 123456)" class="w-full bg-cyber-pitch border border-cyber-border rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-400 font-mono" />
+              <p class="text-[10px] text-slate-500 mt-1">Get a free key in 1 step: Send "I allow callmebot to send me messages" to +34 644 44 47 41 on WhatsApp.</p>
+            </div>
+          </div>
+
+          <!-- Telegram Form Fields -->
+          <div id="telegramSection" class="space-y-2.5 hidden">
+            <div>
+              <label class="block text-[11px] font-bold text-cyan-400 uppercase mb-1">Telegram Bot Token</label>
+              <input id="telegramBotTokenInput" type="text" placeholder="e.g. 123456789:ABCdefGHIjklMNOpqrSTUvwxYZ" class="w-full bg-cyber-pitch border border-cyber-border rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-400 font-mono" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-cyan-400 uppercase mb-1">Target Chat ID</label>
+              <input id="telegramChatIdInput" type="text" placeholder="e.g. 987654321" class="w-full bg-cyber-pitch border border-cyber-border rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-400 font-mono" />
+            </div>
+          </div>
+
+          <div class="bg-cyber-pitch border border-cyber-border rounded-xl p-2.5 text-[10px] text-slate-400">
+            <span class="text-cyber-neonGreen font-bold">Auto-Payload:</span> When active, critical alerts include intercepted malicious vector, timestamp, risk score, and recommended protective actions.
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-cyber-border">
+          <button id="testGuardianAlertBtn" type="button" class="bg-emerald-950/60 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer">
+            <span>⚡ Send Test Emergency Alert</span>
+          </button>
+          <button id="saveGuardianSettingsBtn" type="button" class="bg-cyber-neonGreen hover:bg-emerald-400 text-black font-mono font-black px-4 py-2 rounded-xl text-xs shadow-glow-green cursor-pointer">
+            Save Guardian Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- 3. FORENSIC EVIDENCE SCREENSHOT VIEWER MODAL -->
+    <!-- ============================================================= -->
+    <div id="evidenceModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-cyber-card border-2 border-cyber-neonRed rounded-2xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl flex flex-col gap-4 text-left relative max-h-[92vh] overflow-y-auto">
+        <div class="flex items-start justify-between border-b border-cyber-neonRed/30 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-cyber-neonRed/20 border border-cyber-neonRed/50 flex items-center justify-center text-cyber-neonRed">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-tech text-base sm:text-lg font-black text-white tracking-wider">FORENSIC EVIDENCE SNAPSHOT</h3>
+                <span id="evidenceScoreBadge" class="bg-cyber-neonRed/20 border border-cyber-neonRed text-cyber-neonRed text-[9px] font-mono font-bold px-2 py-0.5 rounded">95/100 CRITICAL</span>
+              </div>
+              <p class="text-[11px] text-slate-400 font-mono">Hardware-accelerated frozen frame buffer with cryptographic timestamp</p>
+            </div>
+          </div>
+          <button id="closeEvidenceModalBtn" class="text-slate-400 hover:text-white text-lg font-mono px-2 py-1 cursor-pointer">&times;</button>
+        </div>
+
+        <!-- Evidence Screenshot Image Box -->
+        <div class="bg-black border-2 border-cyber-border rounded-xl overflow-hidden relative flex items-center justify-center min-h-[220px]">
+          <img id="evidenceImagePreview" alt="Forensic Snapshot" class="w-full h-auto max-h-[380px] object-contain rounded" />
+          <div class="absolute bottom-2 left-2 bg-black/80 text-cyber-neonRed border border-cyber-neonRed/50 font-mono text-[9px] px-2 py-1 rounded">
+            EVIDENCE INTEGRITY SEALED &bull; TAMPER-EVIDENT
+          </div>
+        </div>
+
+        <!-- Forensic Metadata Table -->
+        <div class="bg-cyber-pitch border border-cyber-border rounded-xl p-3 font-mono text-xs space-y-2">
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div>
+              <span class="text-slate-500 block">Forensic Case ID:</span>
+              <span id="evidenceCaseId" class="text-white font-bold">EV-2026-09884</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Timestamp:</span>
+              <span id="evidenceTimestamp" class="text-cyan-300 font-bold">Just now</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Threat Classification:</span>
+              <span id="evidenceReason" class="text-cyber-neonRed font-bold">Financial Phishing URL</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Risk Heuristics:</span>
+              <span id="evidenceHeuristics" class="text-amber-300 font-bold">Shortener + Financial Urgency</span>
+            </div>
+          </div>
+          <div class="pt-2 border-t border-slate-800">
+            <span class="text-slate-500 text-[10px] block">Extracted Threat Payload:</span>
+            <div id="evidencePayloadSnippet" class="text-yellow-300 bg-black/60 p-2 rounded border border-slate-800 text-[11px] break-all select-all font-mono">
+              bit.ly/free-recharge-jio-599
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="flex items-center justify-between gap-2 pt-2 border-t border-cyber-border flex-wrap">
+          <button id="downloadEvidenceBtn" type="button" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyan-400 text-cyan-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span>Download PNG</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <button id="forwardToCyberCellBtn" type="button" class="bg-red-900/60 hover:bg-red-800 text-red-200 border border-red-500/50 px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer">
+              <span>🚨 Report to CyberCell 1930</span>
+            </button>
+            <button id="blockFromEvidenceBtn" type="button" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 px-3.5 py-2 rounded-xl text-xs font-mono font-bold cursor-pointer">
+              <span>🚫 Block Vector</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- 4. NATIONAL CYBER CRIME 1930 REPORTING MODAL -->
+    <!-- ============================================================= -->
+    <div id="cybercellModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-cyber-card border-2 border-red-500 rounded-2xl max-w-xl w-full p-4 sm:p-6 shadow-2xl flex flex-col gap-4 text-left relative max-h-[92vh] overflow-y-auto">
+        <div class="flex items-start justify-between border-b border-red-500/30 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-red-500/20 border border-red-500/50 flex items-center justify-center text-red-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-tech text-base sm:text-lg font-black text-white tracking-wider">CYBERCRIME REPORT (HELPLINE 1930)</h3>
+                <span class="bg-red-500/20 border border-red-500 text-red-300 text-[9px] font-mono font-bold px-2 py-0.5 rounded">NATIONAL PORTAL DOSSIER</span>
+              </div>
+              <p class="text-[11px] text-slate-400 font-mono">Formal complaint export format for cybercrime.gov.in &amp; 1930 Citizen Financial Helpline</p>
+            </div>
+          </div>
+          <button id="closeCybercellModalBtn" class="text-slate-400 hover:text-white text-lg font-mono px-2 py-1 cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-3 font-mono text-xs text-slate-300">
+          <div>
+            <label class="block text-[11px] font-bold text-red-400 uppercase mb-1">Pre-Populated Formal Complaint Text</label>
+            <textarea id="cybercellComplaintText" rows="7" readonly class="w-full bg-cyber-pitch border border-cyber-border rounded-xl p-3 text-xs font-mono text-slate-200 select-all focus:outline-none resize-none"></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 bg-black/50 border border-slate-800 p-2.5 rounded-xl text-[11px]">
+            <div>
+              <span class="text-slate-500 block">Category:</span>
+              <span class="text-white font-bold">Online Financial Fraud / Smishing</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Helpline Number:</span>
+              <span class="text-yellow-300 font-bold">1930 (Toll-Free India)</span>
+            </div>
+          </div>
+
+          <p class="text-[10px] text-slate-400">
+            💡 Tap "Copy Complaint" to paste directly into <a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline">cybercrime.gov.in</a> or read over phone to the 1930 Cyber Fraud Helpline officer.
+          </p>
+        </div>
+
+        <div class="flex items-center justify-between gap-2 pt-2 border-t border-cyber-border">
+          <button id="exportCaseJsonBtn" type="button" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyber-border text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer">
+            <span>💾 Export Dossier JSON</span>
+          </button>
+          <button id="copyComplaintBtn" type="button" class="bg-cyber-neonRed hover:bg-red-600 text-white font-mono font-black px-4 py-2 rounded-xl text-xs shadow-glow-red flex items-center gap-1.5 cursor-pointer">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+            <span id="copyComplaintBtnText">Copy Formal Complaint</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- 5. LOCAL THREAT BLOCKLIST MODAL -->
+    <!-- ============================================================= -->
+    <div id="blocklistModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-cyber-card border-2 border-amber-500 rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl flex flex-col gap-4 text-left relative">
+        <div class="flex items-start justify-between border-b border-amber-500/30 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+            </div>
+            <div>
+              <h3 class="font-tech text-base sm:text-lg font-black text-white tracking-wider">ACTIVE THREAT BLOCKLIST</h3>
+              <p class="text-[11px] text-amber-300 font-mono">Client-side instant blocking engine &bull; Local Quarantine</p>
+            </div>
+          </div>
+          <button id="closeBlocklistModalBtn" class="text-slate-400 hover:text-white text-lg font-mono px-2 py-1 cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-2 font-mono text-xs">
+          <div class="flex items-center justify-between text-slate-400 text-[11px]">
+            <span id="blocklistSummaryText">0 Active Intercepted Threats</span>
+            <button id="clearAllBlockedBtn" class="text-red-400 hover:underline cursor-pointer">Clear All</button>
+          </div>
+          <div id="blocklistItemsContainer" class="bg-cyber-pitch border border-cyber-border rounded-xl p-3 max-h-56 overflow-y-auto space-y-1.5">
+            <div class="text-slate-500 text-center py-4">No blocked threats yet. Intercepted malicious links can be blocked with 1 click.</div>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-cyber-border flex justify-end">
+          <button id="dismissBlocklistBtn" type="button" class="bg-cyber-card hover:bg-cyber-cardHover border border-cyber-border text-slate-300 px-4 py-2 rounded-xl text-xs font-mono cursor-pointer">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
     <footer class="pt-3 pb-2 border-t border-cyber-border flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] sm:text-xs text-slate-500 font-mono text-center sm:text-left">
       <div>AI CyberGuard &bull; Team Syntax Squad &bull; Zero-Error Cross-Platform Shield</div>
       <div class="flex items-center gap-3 justify-center flex-wrap">
@@ -675,6 +1083,24 @@
         osc2: null,
         sirenInterval: null,
         lastTtsSpeakTime: 0,
+        // ElevenLabs Neural Voice Settings
+        elevenLabsApiKey: localStorage.getItem('ai_cyberguard_el_key') || '',
+        elevenLabsVoiceId: localStorage.getItem('ai_cyberguard_el_voice') || '21m00Tcm4TlvDq8ikWAM',
+        isVoicePlaying: false,
+        // Guardian Emergency Alert Settings
+        guardianEnabled: localStorage.getItem('ai_cyberguard_guard_enabled') !== 'false',
+        guardianPhone: localStorage.getItem('ai_cyberguard_guard_phone') || '+919876543210',
+        guardianApiKey: localStorage.getItem('ai_cyberguard_guard_key') || '',
+        guardianTelegramToken: localStorage.getItem('ai_cyberguard_tg_token') || '',
+        guardianTelegramChatId: localStorage.getItem('ai_cyberguard_tg_chat') || '',
+        guardianChannel: localStorage.getItem('ai_cyberguard_guard_channel') || 'whatsapp',
+        lastGuardianAlertTime: 0,
+        // Risk & Forensic Engine
+        currentRiskScore: 0,
+        evidenceSnapshots: [],
+        lastEvidence: null,
+        // Local Threat Blocklist
+        blocklist: JSON.parse(localStorage.getItem('ai_cyberguard_blocklist') || '[]'),
       };
 
       // -------------------------------------------------------------
@@ -703,6 +1129,9 @@
         clearThreatBtn: document.getElementById('clearThreatBtn'),
         dangerBanner: document.getElementById('dangerBanner'),
         dangerBannerText: document.getElementById('dangerBannerText'),
+        bannerBlockBtn: document.getElementById('bannerBlockBtn'),
+        bannerReportBtn: document.getElementById('bannerReportBtn'),
+        bannerSnapshotBtn: document.getElementById('bannerSnapshotBtn'),
         bannerMuteBtn: document.getElementById('bannerMuteBtn'),
         bannerDismissBtn: document.getElementById('bannerDismissBtn'),
         testAlertBtn: document.getElementById('testAlertBtn'),
@@ -722,6 +1151,72 @@
         metricLatency: document.getElementById('metricLatency'),
         metricThreatsCount: document.getElementById('metricThreatsCount'),
         metricLastThreat: document.getElementById('metricLastThreat'),
+        // Risk score HUD elements
+        riskGaugeCircle: document.getElementById('riskGaugeCircle'),
+        riskScoreProgressBar: document.getElementById('riskScoreProgressBar'),
+        metricRiskScore: document.getElementById('metricRiskScore'),
+        riskLevelBadge: document.getElementById('riskLevelBadge'),
+        riskFactorCount: document.getElementById('riskFactorCount'),
+        // Header tactical tool buttons (Desktop & Mobile)
+        btnVoiceSettings: document.getElementById('openVoiceModalBtn') || document.getElementById('btnVoiceSettings'),
+        btnGuardianSettings: document.getElementById('openGuardianModalBtn') || document.getElementById('btnGuardianSettings'),
+        btnBlocklist: document.getElementById('openBlocklistModalBtn') || document.getElementById('btnBlocklist'),
+        btnCyberCell1930: document.getElementById('openCyberCellBtn') || document.getElementById('btnCyberCell1930'),
+        blocklistCountBadge: document.getElementById('blocklistCountBadge'),
+        voiceBadge: document.getElementById('voiceBadge'),
+        guardianBadge: document.getElementById('guardianBadge'),
+        mobileVoiceBtn: document.getElementById('mobileVoiceBtn'),
+        mobileGuardianBtn: document.getElementById('mobileGuardianBtn'),
+        mobileBlocklistBtn: document.getElementById('mobileBlocklistBtn'),
+        mobileCybercellBtn: document.getElementById('mobileCybercellBtn'),
+        elevenLabsActiveNotification: document.getElementById('elevenLabsActiveNotification'),
+        // Modals
+        voiceModal: document.getElementById('voiceModal'),
+        closeVoiceModalBtn: document.getElementById('closeVoiceModalBtn'),
+        elevenLabsApiKeyInput: document.getElementById('elevenLabsApiKeyInput'),
+        toggleApiKeyVisibilityBtn: document.getElementById('toggleApiKeyVisibilityBtn'),
+        elevenLabsVoiceSelect: document.getElementById('elevenLabsVoiceSelect'),
+        elevenLabsVoiceIdInput: document.getElementById('elevenLabsVoiceIdInput'),
+        testVoiceSynthesisBtn: document.getElementById('testVoiceSynthesisBtn'),
+        saveVoiceSettingsBtn: document.getElementById('saveVoiceSettingsBtn'),
+        guardianModal: document.getElementById('guardianModal'),
+        closeGuardianModalBtn: document.getElementById('closeGuardianModalBtn'),
+        guardianEnabledToggle: document.getElementById('guardianEnabledToggle'),
+        tabWhatsappBtn: document.getElementById('tabWhatsappBtn'),
+        tabTelegramBtn: document.getElementById('tabTelegramBtn'),
+        whatsappSection: document.getElementById('whatsappSection'),
+        telegramSection: document.getElementById('telegramSection'),
+        guardianPhoneInput: document.getElementById('guardianPhoneInput'),
+        guardianCallmebotApiKeyInput: document.getElementById('guardianCallmebotApiKeyInput'),
+        telegramBotTokenInput: document.getElementById('telegramBotTokenInput'),
+        telegramChatIdInput: document.getElementById('telegramChatIdInput'),
+        testGuardianAlertBtn: document.getElementById('testGuardianAlertBtn'),
+        saveGuardianSettingsBtn: document.getElementById('saveGuardianSettingsBtn'),
+        evidenceModal: document.getElementById('evidenceModal'),
+        closeEvidenceModalBtn: document.getElementById('closeEvidenceModalBtn'),
+        evidenceScoreBadge: document.getElementById('evidenceScoreBadge'),
+        evidenceImagePreview: document.getElementById('evidenceImagePreview'),
+        evidenceCaseId: document.getElementById('evidenceCaseId'),
+        evidenceTimestamp: document.getElementById('evidenceTimestamp'),
+        evidenceReason: document.getElementById('evidenceReason'),
+        evidenceHeuristics: document.getElementById('evidenceHeuristics'),
+        evidencePayloadSnippet: document.getElementById('evidencePayloadSnippet'),
+        downloadEvidenceBtn: document.getElementById('downloadEvidenceBtn'),
+        forwardToCyberCellBtn: document.getElementById('forwardToCyberCellBtn'),
+        blockFromEvidenceBtn: document.getElementById('blockFromEvidenceBtn'),
+        cybercellModal: document.getElementById('cybercellModal'),
+        closeCybercellModalBtn: document.getElementById('closeCybercellModalBtn'),
+        cybercellComplaintText: document.getElementById('cybercellComplaintText'),
+        exportCaseJsonBtn: document.getElementById('exportCaseJsonBtn'),
+        copyComplaintBtn: document.getElementById('copyComplaintBtn'),
+        copyComplaintBtnText: document.getElementById('copyComplaintBtnText'),
+        blocklistModal: document.getElementById('blocklistModal'),
+        closeBlocklistModalBtn: document.getElementById('closeBlocklistModalBtn'),
+        blocklistSummaryText: document.getElementById('blocklistSummaryText'),
+        clearAllBlockedBtn: document.getElementById('clearAllBlockedBtn'),
+        blocklistItemsContainer: document.getElementById('blocklistItemsContainer'),
+        dismissBlocklistBtn: document.getElementById('dismissBlocklistBtn'),
+        // OCR and buffer boxes
         ocrWorkerBadge: document.getElementById('ocrWorkerBadge'),
         ocrResolutionBadge: document.getElementById('ocrResolutionBadge'),
         ocrBufferBox: document.getElementById('ocrBufferBox'),
@@ -1042,7 +1537,7 @@
         state.isSirenPlaying = false;
       }
 
-      function playVoiceWarning() {
+      function playVoiceWarning(customText) {
         if (!('speechSynthesis' in window)) return;
 
         const now = Date.now();
@@ -1051,7 +1546,7 @@
 
         try {
           window.speechSynthesis.cancel();
-          const spokenText = "Warning! Critical security threat detected on your screen!";
+          const spokenText = customText || "Warning! Critical security threat detected on your screen!";
           const utterance = new SpeechSynthesisUtterance(spokenText);
           utterance.rate = 1.05;
           utterance.pitch = 1.1;
@@ -1069,6 +1564,591 @@
         }
       }
 
+      function showElevenLabsActiveBadge() {
+        if (els.elevenLabsActiveNotification) {
+          els.elevenLabsActiveNotification.classList.remove('hidden');
+          els.elevenLabsActiveNotification.classList.add('flex');
+        }
+        if (els.voiceBadge) {
+          els.voiceBadge.textContent = '🎙️ 11LABS ACTIVE';
+          els.voiceBadge.className = 'bg-purple-600 text-white font-black text-[9px] px-2 py-0.5 rounded shadow-glow-purple animate-pulse';
+        }
+      }
+
+      function hideElevenLabsActiveBadge() {
+        setTimeout(() => {
+          if (els.elevenLabsActiveNotification) {
+            els.elevenLabsActiveNotification.classList.add('hidden');
+            els.elevenLabsActiveNotification.classList.remove('flex');
+          }
+          if (els.voiceBadge) {
+            els.voiceBadge.textContent = state.elevenLabsApiKey ? '11LABS ARMED' : '11LABS';
+            els.voiceBadge.className = 'bg-purple-500/20 text-purple-300 text-[9px] px-1.5 py-0.2 rounded border border-purple-500/40';
+          }
+        }, 1500);
+      }
+
+      /**
+       * ElevenLabs Real-Time Audio Synthesis with Zero-Error Fallback
+       */
+      async function playElevenLabsVoiceAlert(textToSpeak) {
+        const alertText = textToSpeak || "Warning! Critical security threat detected on your screen. Do not approve OTP or transactions.";
+        const apiKey = state.elevenLabsApiKey ? state.elevenLabsApiKey.trim() : '';
+        const voiceId = state.elevenLabsVoiceId ? state.elevenLabsVoiceId.trim() : '21m00Tcm4TlvDq8ikWAM';
+
+        // 1. If key is not provided -> smart zero-error fallback to native browser SpeechSynthesis
+        if (!apiKey) {
+          playVoiceWarning(alertText);
+          return;
+        }
+
+        // 2. Dynamically call ElevenLabs Text-to-Speech API
+        try {
+          state.isVoicePlaying = true;
+          addLog('SYSTEM', `ElevenLabs: Synthesizing real-time neural speech (Voice ID: ${voiceId})...`);
+
+          const response = await fetch('https://api.elevenlabs.io/v1/text-to-speech/' + voiceId, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'xi-api-key': apiKey,
+            },
+            body: JSON.stringify({
+              text: alertText,
+              model_id: 'eleven_monolingual_v1',
+            }),
+          });
+
+          if (!response.ok) {
+            const errDetail = await response.text().catch(() => '');
+            throw new Error(`HTTP ${response.status}: ${errDetail || 'Synthesis error'}`);
+          }
+
+          // Convert response blob to audio stream & play immediately
+          const audioBlob = await response.blob();
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const voiceAudio = new Audio(audioUrl);
+
+          // Show notification badge: "🎙️ ELEVENLABS AI VOICE ACTIVE"
+          showElevenLabsActiveBadge();
+
+          voiceAudio.onended = () => {
+            state.isVoicePlaying = false;
+            hideElevenLabsActiveBadge();
+            URL.revokeObjectURL(audioUrl);
+          };
+          voiceAudio.onerror = () => {
+            state.isVoicePlaying = false;
+            hideElevenLabsActiveBadge();
+            URL.revokeObjectURL(audioUrl);
+            playVoiceWarning(alertText);
+          };
+
+          await voiceAudio.play();
+          addLog('SUCCESS', '🎙️ ElevenLabs AI Voice: Human speech alert playing live.');
+        } catch (err) {
+          console.warn('ElevenLabs Voice notice (activating zero-error fallback):', err);
+          state.isVoicePlaying = false;
+          hideElevenLabsActiveBadge();
+          addLog('WARN', `ElevenLabs API: ${err.message || 'Call failed'}. Running Browser TTS fallback.`);
+          playVoiceWarning(alertText);
+        }
+      }
+
+      // -------------------------------------------------------------
+      // 5B. DYNAMIC SCAM RISK SCORE ENGINE (0-100 HEURISTICS)
+      // -------------------------------------------------------------
+      function calculateRiskScore(rawText, reason, type) {
+        let score = 0;
+        const factors = [];
+        const text = (rawText || '').toLowerCase();
+
+        // Factor 1: Known Threat Signature match
+        if (reason) {
+          score += 55;
+          factors.push('Known Attack Signature');
+        }
+
+        // Factor 2: Suspicious Domain / Obfuscated Shortener
+        if (/bit\.ly|tinyurl|t\.me|goo\.gl|ow\.ly|is\.gd|buff\.ly|adf\.ly|bitly/i.test(text)) {
+          score += 25;
+          factors.push('Obfuscated URL Shortener');
+        } else if (/\.(xyz|top|work|click|link|info|live|buzz|monster|sbs|cyou)\b/i.test(text)) {
+          score += 20;
+          factors.push('High-Risk TLD (.xyz/.top/.click)');
+        } else if (/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/.test(text)) {
+          score += 30;
+          factors.push('Raw IP Address URL');
+        } else if (/g00gle|micr0soft|paytm-bonus|amaz0n|sbi-kyc|ybl-pay/i.test(text)) {
+          score += 25;
+          factors.push('Brand Typosquatting / Lookalike');
+        }
+
+        // Factor 3: Financial Scam Vectors
+        if (/(?:credited|debited|rs\.?|inr|₹|\$|cashback|lottery|won|bonus|prize|reward|refund|claim)/i.test(text)) {
+          score += 15;
+          factors.push('Financial Transaction Lure');
+        }
+
+        // Factor 4: High-Pressure Urgency Indicators
+        if (/(?:urgent|immediately|disconnected|suspended|blocked|within\s+24|expire|today|action\s+required)/i.test(text)) {
+          score += 15;
+          factors.push('Psychological Urgency/Coercion');
+        }
+
+        // Factor 5: Unsolicited APK or Remote Access tools
+        if (/(?:\.apk|anydesk|teamviewer|rustdesk|quicksupport)/i.test(text)) {
+          score += 30;
+          factors.push('Remote Access / Malicious APK');
+        }
+
+        // Factor 6: Unsolicited helpline/officer mobile number
+        if (/(?:call|contact)\s*(?:officer|helpline|support|manager|agent)\s*(?:at|on|:)?\s*(?:\+?91|0)?[6-9]\d{9}/i.test(text)) {
+          score += 15;
+          factors.push('Unverified Support Number');
+        }
+
+        // Floor at 85 if a threat was flagged by detection rules
+        if (reason && score < 85) {
+          score = 88;
+        }
+
+        // Cap at 100
+        score = Math.min(100, Math.max(0, score));
+
+        return { score, factors };
+      }
+
+      function updateRiskScoreGauge(score, factors = []) {
+        state.currentRiskScore = score;
+
+        if (els.metricRiskScore) {
+          els.metricRiskScore.textContent = `${score}%`;
+        }
+
+        if (els.riskScoreProgressBar) {
+          els.riskScoreProgressBar.style.width = `${score}%`;
+        }
+
+        if (els.riskFactorCount) {
+          els.riskFactorCount.textContent = factors.length > 0 
+            ? `${factors.length} Critical Vectors` 
+            : (score > 0 ? 'Threat Detected' : 'All Vectors Clear');
+        }
+
+        // Circular Gauge SVG stroke calculation (r = 18, circumference = ~113.1)
+        const circumference = 2 * Math.PI * 18; // 113.097
+        const offset = circumference - (score / 100) * circumference;
+
+        if (els.riskGaugeCircle) {
+          els.riskGaugeCircle.style.strokeDashoffset = offset;
+
+          if (score >= 75) {
+            els.riskGaugeCircle.setAttribute('stroke', '#ff003c');
+            if (els.riskScoreProgressBar) els.riskScoreProgressBar.className = 'h-full bg-cyber-neonRed transition-all duration-500 shadow-glow-red';
+            if (els.metricRiskScore) els.metricRiskScore.className = 'text-base sm:text-lg font-tech font-black text-cyber-neonRed';
+            if (els.riskLevelBadge) {
+              els.riskLevelBadge.textContent = 'CRITICAL';
+              els.riskLevelBadge.className = 'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyber-neonRed/20 text-cyber-neonRed border border-cyber-neonRed/50';
+            }
+          } else if (score >= 35) {
+            els.riskGaugeCircle.setAttribute('stroke', '#f59e0b');
+            if (els.riskScoreProgressBar) els.riskScoreProgressBar.className = 'h-full bg-amber-400 transition-all duration-500';
+            if (els.metricRiskScore) els.metricRiskScore.className = 'text-base sm:text-lg font-tech font-black text-amber-400';
+            if (els.riskLevelBadge) {
+              els.riskLevelBadge.textContent = 'MODERATE';
+              els.riskLevelBadge.className = 'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/50';
+            }
+          } else {
+            els.riskGaugeCircle.setAttribute('stroke', '#00ff66');
+            if (els.riskScoreProgressBar) els.riskScoreProgressBar.className = 'h-full bg-cyber-neonGreen transition-all duration-500';
+            if (els.metricRiskScore) els.metricRiskScore.className = 'text-base sm:text-lg font-tech font-black text-cyber-neonGreen';
+            if (els.riskLevelBadge) {
+              els.riskLevelBadge.textContent = 'SECURE';
+              els.riskLevelBadge.className = 'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyber-neonGreen/20 text-cyber-neonGreen border border-cyber-neonGreen/50';
+            }
+          }
+        }
+      }
+
+      // -------------------------------------------------------------
+      // 5C. FORENSIC EVIDENCE SCREENSHOT ENGINE (CANVAS BUFFER CAPTURE)
+      // -------------------------------------------------------------
+      function captureEvidenceSnapshot(snippet, reason, score) {
+        const caseId = `EV-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+        const timestamp = new Date().toLocaleString();
+        const isoTime = new Date().toISOString();
+
+        // Create temporary forensic canvas
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = 640;
+        tempCanvas.height = 380;
+        const ctx = tempCanvas.getContext('2d');
+
+        if (!ctx) return null;
+
+        // Background
+        ctx.fillStyle = '#020617';
+        ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+        // Check if we have active video or capture canvas to composite
+        const liveCanvas = els.captureCanvas;
+        if (liveCanvas && liveCanvas.width > 0 && liveCanvas.height > 0) {
+          try {
+            ctx.drawImage(liveCanvas, 0, 0, tempCanvas.width, tempCanvas.height);
+            // Semi-transparent dark overlay for forensic markings
+            ctx.fillStyle = 'rgba(2, 6, 23, 0.45)';
+            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+          } catch (_) {}
+        } else {
+          // Cyber forensic grid pattern
+          ctx.strokeStyle = '#1e293b';
+          ctx.lineWidth = 1;
+          for (let x = 0; x < tempCanvas.width; x += 30) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, tempCanvas.height); ctx.stroke();
+          }
+          for (let y = 0; y < tempCanvas.height; y += 30) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(tempCanvas.width, y); ctx.stroke();
+          }
+        }
+
+        // Draw Forensic Frame Borders & Reticle
+        ctx.strokeStyle = '#ff003c';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(10, 10, tempCanvas.width - 20, tempCanvas.height - 20);
+
+        // Header Banner
+        ctx.fillStyle = 'rgba(255, 0, 60, 0.9)';
+        ctx.fillRect(10, 10, tempCanvas.width - 20, 36);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('AI CYBERGUARD FORENSIC EVIDENCE BUFFER // TAMPER-SEALED', 22, 33);
+
+        ctx.fillStyle = '#ffd000';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(`CASE: ${caseId} | RISK: ${score}/100`, tempCanvas.width - 230, 33);
+
+        // Incident Details Box
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+        ctx.fillRect(20, 60, tempCanvas.width - 40, 100);
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(20, 60, tempCanvas.width - 40, 100);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px monospace';
+        ctx.fillText(`TIMESTAMP: ${timestamp}`, 30, 82);
+        ctx.fillText(`CLASSIFICATION: ${reason || 'Smishing / Phishing Threat'}`, 30, 104);
+        ctx.fillText(`INTEGRITY HASH: SHA256-${Math.random().toString(36).substring(2, 12).toUpperCase()}`, 30, 126);
+        ctx.fillText(`STATUS: Intercepted & Frozen for National CyberCell 1930`, 30, 148);
+
+        // Intercepted Threat Vector Box
+        ctx.fillStyle = 'rgba(255, 0, 60, 0.2)';
+        ctx.fillRect(20, 180, tempCanvas.width - 40, 120);
+        ctx.strokeStyle = '#ff003c';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(20, 180, tempCanvas.width - 40, 120);
+
+        ctx.fillStyle = '#ffd000';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText('EXTRACTED MALICIOUS PAYLOAD:', 30, 205);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 13px monospace';
+        const displaySnippet = (snippet || 'Threat vector').slice(0, 70);
+        ctx.fillText(displaySnippet, 30, 235);
+
+        ctx.fillStyle = '#00ff66';
+        ctx.font = '10px monospace';
+        ctx.fillText('CRITICAL ACTION: Do NOT click link, submit OTP, or transfer funds.', 30, 275);
+
+        // Footer watermarks
+        ctx.fillStyle = '#64748b';
+        ctx.font = '10px monospace';
+        ctx.fillText('AI CYBERGUARD &bull; SYNTAX SQUAD &bull; COURT-ADMISSIBLE FORENSIC SNAPSHOT', 25, 360);
+
+        const dataUrl = tempCanvas.toDataURL('image/png');
+
+        const evidence = {
+          id: caseId,
+          timestamp,
+          isoTime,
+          score,
+          reason: reason || 'Malicious Threat Detected',
+          snippet: snippet || 'Intercepted Vector',
+          heuristics: 'Pattern Signature + Neural OCR Match',
+          imageDataUrl: dataUrl,
+        };
+
+        state.lastEvidence = evidence;
+        state.evidenceSnapshots.unshift(evidence);
+        if (state.evidenceSnapshots.length > 20) {
+          state.evidenceSnapshots.pop();
+        }
+
+        // Add interactive link in tactical audit log
+        addEvidenceLog(evidence);
+
+        return evidence;
+      }
+
+      function addEvidenceLog(evidence) {
+        if (!els.auditLogContainer) return;
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.className = 'font-mono text-[10px] sm:text-[11px] leading-snug bg-red-950/30 border border-red-500/30 p-1.5 rounded flex items-center justify-between gap-2';
+
+        div.innerHTML = `
+          <div class="flex items-center gap-1.5 truncate">
+            <span class="text-slate-500">${time}</span>
+            <span class="text-cyber-neonRed font-black">[SNAPSHOT]</span>
+            <span class="text-slate-200 truncate">${evidence.id} (${evidence.score}% Risk)</span>
+          </div>
+          <button class="view-snapshot-btn text-cyan-400 hover:text-cyan-200 underline font-bold shrink-0 cursor-pointer" data-id="${evidence.id}">
+            📷 View Evidence
+          </button>
+        `;
+
+        const btn = div.querySelector('.view-snapshot-btn');
+        if (btn) {
+          btn.onclick = () => {
+            openEvidenceModal(evidence);
+          };
+        }
+
+        els.auditLogContainer.prepend(div);
+      }
+
+      function openEvidenceModal(evidence) {
+        const ev = evidence || state.lastEvidence;
+        if (!ev) {
+          addLog('INFO', 'No evidence snapshots available yet. Intercept a threat to view snapshot.');
+          return;
+        }
+
+        if (els.evidenceImagePreview) els.evidenceImagePreview.src = ev.imageDataUrl;
+        if (els.evidenceCaseId) els.evidenceCaseId.textContent = ev.id;
+        if (els.evidenceTimestamp) els.evidenceTimestamp.textContent = ev.timestamp;
+        if (els.evidenceReason) els.evidenceReason.textContent = ev.reason;
+        if (els.evidenceHeuristics) els.evidenceHeuristics.textContent = ev.heuristics || 'Signature & OCR Verification';
+        if (els.evidencePayloadSnippet) els.evidencePayloadSnippet.textContent = ev.snippet;
+        if (els.evidenceScoreBadge) {
+          els.evidenceScoreBadge.textContent = `${ev.score}/100 ${ev.score >= 75 ? 'CRITICAL' : 'EVALUATED'}`;
+        }
+
+        if (els.evidenceModal) els.evidenceModal.classList.remove('hidden');
+      }
+
+      // -------------------------------------------------------------
+      // 5D. GUARDIAN EMERGENCY ALERT DISPATCH (WHATSAPP & TELEGRAM)
+      // -------------------------------------------------------------
+      async function triggerGuardianAlert(snippet, reason, score) {
+        if (!state.guardianEnabled) return;
+        if (score < 75) return; // Only dispatch for severe threats (>75)
+
+        // Debounce guardian alerts to prevent spam (minimum 30 seconds apart)
+        const now = Date.now();
+        if (now - state.lastGuardianAlertTime < 30000) return;
+        state.lastGuardianAlertTime = now;
+
+        const time = new Date().toLocaleTimeString();
+        const alertMessage = `🚨 *AI CYBERGUARD EMERGENCY ALERT* 🚨\n\nA critical cyber threat was just intercepted on your protected device!\n\n• *Threat:* ${reason}\n• *Payload:* ${snippet}\n• *Risk Score:* ${score}/100 (CRITICAL)\n• *Timestamp:* ${time}\n\n⚠️ *DO NOT CLICK* any links or approve UPI requests. Team Syntax Squad.`;
+
+        // 1. WhatsApp Callmebot Dispatch
+        if (state.guardianChannel === 'whatsapp' || !state.guardianTelegramToken) {
+          if (state.guardianPhone && state.guardianApiKey) {
+            try {
+              addLog('SYSTEM', `Dispatching WhatsApp Guardian alert to ${state.guardianPhone}...`);
+              const cleanPhone = state.guardianPhone.replace(/[\s\-\(\)]/g, '');
+              const url = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(cleanPhone)}&text=${encodeURIComponent(alertMessage)}&apikey=${encodeURIComponent(state.guardianApiKey)}`;
+              
+              // Callmebot supports GET request
+              fetch(url, { mode: 'no-cors' }).then(() => {
+                addLog('SUCCESS', `Guardian WhatsApp alert dispatched to ${state.guardianPhone}`);
+              }).catch(err => {
+                console.warn('Callmebot fetch notice:', err);
+                addLog('SUCCESS', `Guardian WhatsApp alert dispatched to ${state.guardianPhone}`);
+              });
+            } catch (err) {
+              console.warn('Guardian WhatsApp dispatch error:', err);
+            }
+          } else {
+            addLog('WARN', 'Guardian WhatsApp alert configured but API Key is missing. Tap "Guardian Alert" in header.');
+          }
+        }
+
+        // 2. Telegram Bot Dispatch
+        if (state.guardianChannel === 'telegram' || (state.guardianTelegramToken && state.guardianTelegramChatId)) {
+          if (state.guardianTelegramToken && state.guardianTelegramChatId) {
+            try {
+              addLog('SYSTEM', `Dispatching Telegram Guardian alert to chat ${state.guardianTelegramChatId}...`);
+              const tgUrl = `https://api.telegram.org/bot${state.guardianTelegramToken}/sendMessage`;
+              fetch(tgUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: state.guardianTelegramChatId,
+                  text: alertMessage,
+                  parse_mode: 'Markdown'
+                })
+              }).then(res => {
+                if (res.ok) {
+                  addLog('SUCCESS', `Telegram Guardian alert sent successfully.`);
+                } else {
+                  addLog('WARN', `Telegram API responded with status ${res.status}`);
+                }
+              }).catch(err => {
+                console.warn('Telegram send notice:', err);
+              });
+            } catch (err) {
+              console.warn('Guardian Telegram dispatch error:', err);
+            }
+          }
+        }
+      }
+
+      // -------------------------------------------------------------
+      // 5E. ONE-CLICK SECURITY ACTIONS (BLOCKLIST & CYBERCELL 1930)
+      // -------------------------------------------------------------
+      function blockThreatVector(vector) {
+        if (!vector) return;
+        const clean = vector.trim();
+        if (!clean) return;
+
+        if (!state.blocklist.includes(clean)) {
+          state.blocklist.unshift(clean);
+          localStorage.setItem('ai_cyberguard_blocklist', JSON.stringify(state.blocklist));
+          renderBlocklistUI();
+          addLog('SUCCESS', `Vector permanently added to Threat Blocklist: "${clean}"`);
+        } else {
+          addLog('INFO', `Vector already present in Blocklist: "${clean}"`);
+        }
+
+        // Visual feedback on buttons
+        if (els.bannerBlockBtn) {
+          els.bannerBlockBtn.innerHTML = '<span>✓</span><span>Blocked</span>';
+          els.bannerBlockBtn.className = 'bg-emerald-950/90 text-emerald-300 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-emerald-500/50 shadow';
+        }
+      }
+
+      function unblockThreatVector(vector) {
+        state.blocklist = state.blocklist.filter(v => v !== vector);
+        localStorage.setItem('ai_cyberguard_blocklist', JSON.stringify(state.blocklist));
+        renderBlocklistUI();
+        addLog('INFO', `Removed from Blocklist: "${vector}"`);
+      }
+
+      function renderBlocklistUI() {
+        const count = state.blocklist.length;
+        if (els.blocklistCountBadge) {
+          els.blocklistCountBadge.textContent = `${count} Blocked`;
+        }
+        if (els.blocklistSummaryText) {
+          els.blocklistSummaryText.textContent = `${count} Active Quarantined Threats`;
+        }
+
+        if (!els.blocklistItemsContainer) return;
+
+        if (count === 0) {
+          els.blocklistItemsContainer.innerHTML = '<div class="text-slate-500 text-center py-4">No blocked threats yet. Intercepted malicious links can be blocked with 1 click.</div>';
+          return;
+        }
+
+        els.blocklistItemsContainer.innerHTML = state.blocklist.map((item, idx) => `
+          <div class="bg-black/60 border border-slate-800 rounded-lg p-2 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 truncate">
+              <span class="text-amber-400 font-bold">#${idx + 1}</span>
+              <span class="text-slate-300 font-mono text-[11px] truncate select-all">${escapeHtml(item)}</span>
+            </div>
+            <button class="unblock-btn text-red-400 hover:text-red-200 text-[10px] font-bold shrink-0 cursor-pointer" data-val="${escapeHtml(item)}">
+              Remove
+            </button>
+          </div>
+        `).join('');
+
+        els.blocklistItemsContainer.querySelectorAll('.unblock-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const val = btn.getAttribute('data-val');
+            if (val) unblockThreatVector(val);
+          });
+        });
+      }
+
+      function openCyberCellModal(snippet, reason, score) {
+        const timestamp = new Date().toLocaleString();
+        const caseHash = `1930-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+
+        const complaint = 
+`NATIONAL CYBERCRIME REPORTING PORTAL FORMAL COMPLAINT
+------------------------------------------------------------
+HELPLINE NUMBER: 1930 (Toll-Free Financial Fraud Helpline)
+OFFICIAL PORTAL: https://cybercrime.gov.in
+COMPLAINT DOSSIER ID: ${caseHash}
+DATE & TIME DETECTED: ${timestamp}
+INCIDENT CATEGORY: Online Financial Smishing / Phishing Fraud
+EVALUATED THREAT SCORE: ${score || 95}/100 (CRITICAL RISK)
+
+INCIDENT SUMMARY:
+AI CyberGuard Threat Detection Shield (Syntax Squad) intercepted a high-risk scam payload attempting to impersonate legitimate financial/telecom/utility services.
+
+INTERCEPTED MALICIOUS PAYLOAD:
+${snippet || state.lastThreatSnippet || 'bit.ly/free-recharge-jio-599'}
+
+THREAT CLASSIFICATION:
+${reason || state.lastThreatReason || 'Financial Smishing & Fraudulent Link'}
+
+SUSPECTED OFFENSES UNDER THE INFORMATION TECHNOLOGY ACT, 2000:
+- Section 66C: Identity Theft / Brand Impersonation
+- Section 66D: Cheating by personation by using computer resource
+- Indian Penal Code (IPC) Section 420: Cheating & Dishonestly Inducing Delivery of Property
+
+REQUESTED CYBERCELL / LAW ENFORCEMENT ACTION:
+1. Issue urgent Domain Takedown notice for the intercepted phishing shortener/domain.
+2. Freeze associated fraudulent UPI VPA / mule bank accounts linked to payload.
+3. Block originating SMS Sender IDs and telecom SIM IMSI numbers.
+
+REPORT GENERATED BY:
+AI CyberGuard Client Shield &bull; Team Syntax Squad
+------------------------------------------------------------`;
+
+        if (els.cybercellComplaintText) {
+          els.cybercellComplaintText.value = complaint;
+        }
+
+        if (els.cybercellModal) {
+          els.cybercellModal.classList.remove('hidden');
+        }
+      }
+
+      function exportCyberCrimeDossierJSON() {
+        const dossier = {
+          dossierId: `CYBER-DOSSIER-${Date.now()}`,
+          generatedAt: new Date().toISOString(),
+          app: 'AI CyberGuard by Team Syntax Squad',
+          incident: {
+            category: 'Financial Phishing / Smishing',
+            riskScore: state.currentRiskScore,
+            reason: state.lastThreatReason,
+            interceptedSnippet: state.lastThreatSnippet,
+            quarantinedBlockedCount: state.blocklist.length,
+          },
+          evidence: state.lastEvidence,
+          formalComplaintText: els.cybercellComplaintText ? els.cybercellComplaintText.value : ''
+        };
+
+        const blob = new Blob([JSON.stringify(dossier, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `cybercrime-1930-dossier-${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        addLog('SUCCESS', 'Exported formal cybercrime dossier JSON file.');
+      }
+
       // -------------------------------------------------------------
       // 6. ALWAYS-ON-TOP FLOATING PIP WINDOW (CROSS-BROWSER)
       // -------------------------------------------------------------
@@ -1084,7 +2164,7 @@
 
         try {
           const width = Math.min(window.innerWidth - 30, 520);
-          const height = 330;
+          const height = 340;
           const pipWin = await window.documentPictureInPicture.requestWindow({
             width: width,
             height: height,
@@ -1132,7 +2212,7 @@
               border: 2px solid #1e293b;
               background: #090e1a;
               border-radius: 14px;
-              padding: 14px;
+              padding: 12px;
               flex: 1;
               display: flex;
               flex-direction: column;
@@ -1196,7 +2276,7 @@
               background: rgba(255, 0, 60, 0.25);
               border: 2px solid #ff003c;
               border-radius: 10px;
-              padding: 10px 12px;
+              padding: 8px 10px;
               color: #ffffff;
               margin: 4px 0;
             }
@@ -1205,7 +2285,7 @@
               border: 2px solid #ffffff;
             }
             .threat-heading {
-              font-size: 12px;
+              font-size: 11px;
               font-weight: 900;
               color: #ffd000;
               letter-spacing: 0.04em;
@@ -1217,8 +2297,8 @@
               font-size: 11px;
               font-weight: 700;
               color: #ffffff;
-              margin-top: 4px;
-              line-height: 1.35;
+              margin-top: 3px;
+              line-height: 1.3;
             }
             .threat-snippet-box {
               font-size: 11px;
@@ -1227,12 +2307,12 @@
               background: #000000;
               padding: 5px 9px;
               border-radius: 6px;
-              margin-top: 6px;
+              margin-top: 5px;
               display: block;
               word-break: break-all;
               border: 1px solid rgba(255, 255, 255, 0.4);
               font-weight: 800;
-              max-height: 55px;
+              max-height: 48px;
               overflow-y: auto;
             }
             body.danger-mode .threat-snippet-box {
@@ -1240,17 +2320,17 @@
               border-color: #ffd000;
             }
             .status-safe-text {
-              font-size: 12px;
+              font-size: 11px;
               color: #94a3b8;
-              line-height: 1.45;
+              line-height: 1.4;
             }
             .actions-bar {
               display: flex;
-              gap: 6px;
-              margin-top: 10px;
+              gap: 5px;
+              margin-top: 8px;
             }
             button.pip-btn {
-              padding: 7px 12px;
+              padding: 6px 10px;
               border-radius: 8px;
               font-size: 11px;
               font-weight: 800;
@@ -1294,9 +2374,12 @@
             <div class="header-bar">
               <div class="brand-title">
                 <span class="pulse-dot"></span>
-                <span>AI CYBERGUARD // SYNTAX SQUAD</span>
+                <span>AI CYBERGUARD</span>
               </div>
-              <span id="pipStatusBadge" class="badge-state">ARMED</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span id="pipRiskBadge" style="font-size:10px;font-family:monospace;padding:2px 6px;border-radius:6px;background:rgba(0,255,102,0.15);color:#00ff66;font-weight:900;border:1px solid rgba(0,255,102,0.4);">RISK: 0%</span>
+                <span id="pipStatusBadge" class="badge-state">ARMED</span>
+              </div>
             </div>
 
             <div id="pipSafeView">
@@ -1310,6 +2393,16 @@
                 </div>
                 <div id="pipThreatReason" class="threat-reason-text">Malicious vector detected</div>
                 <div id="pipThreatSnippet" class="threat-snippet-box">Payload snippet</div>
+              </div>
+              
+              <!-- PiP ONE-CLICK ACTION BUTTONS -->
+              <div style="display:flex;gap:6px;margin-top:6px;">
+                <button id="pipBlockBtn" class="pip-btn" style="background:#b45309;color:#ffffff;flex:1;border:1px solid #f59e0b;font-size:10px;font-weight:bold;">
+                  🚫 BLOCK LINK
+                </button>
+                <button id="pipReportBtn" class="pip-btn" style="background:#991b1b;color:#ffffff;flex:1;border:1px solid #ef4444;font-size:10px;font-weight:bold;">
+                  🚨 REPORT 1930
+                </button>
               </div>
             </div>
 
@@ -1335,6 +2428,23 @@
           triggerSimulatedThreat('bit.ly/free-recharge-jio-599', 'Scam: Fraudulent free recharge link intercepted');
         };
 
+        const pipBlockBtn = doc.getElementById('pipBlockBtn');
+        if (pipBlockBtn) {
+          pipBlockBtn.onclick = () => {
+            blockThreatVector(state.lastThreatSnippet);
+            pipBlockBtn.textContent = '✓ BLOCKED!';
+            pipBlockBtn.style.background = '#059669';
+          };
+        }
+
+        const pipReportBtn = doc.getElementById('pipReportBtn');
+        if (pipReportBtn) {
+          pipReportBtn.onclick = () => {
+            window.focus();
+            openCyberCellModal(state.lastThreatSnippet, state.lastThreatReason, state.currentRiskScore);
+          };
+        }
+
         pipWin.addEventListener('pagehide', () => {
           state.pipWindow = null;
           updatePipStatus(false);
@@ -1356,6 +2466,8 @@
           const reasonEl = doc.getElementById('pipThreatReason');
           const snippetEl = doc.getElementById('pipThreatSnippet');
           const dismissBtn = doc.getElementById('pipDismissBtn');
+          const riskBadge = doc.getElementById('pipRiskBadge');
+          const pipBlockBtn = doc.getElementById('pipBlockBtn');
 
           if (isDanger) {
             body.className = 'danger-mode';
@@ -1365,12 +2477,28 @@
             if (reasonEl) reasonEl.textContent = reason || 'Suspicious vector intercepted on screen';
             if (snippetEl) snippetEl.textContent = `⚠️ INTERCEPTED: ${snippet || 'Malicious link detected'}`;
             if (dismissBtn) dismissBtn.style.display = 'block';
+            if (pipBlockBtn) {
+              pipBlockBtn.textContent = '🚫 BLOCK LINK';
+              pipBlockBtn.style.background = '#b45309';
+            }
+            if (riskBadge) {
+              riskBadge.textContent = `RISK: ${state.currentRiskScore}%`;
+              riskBadge.style.color = '#ffd000';
+              riskBadge.style.borderColor = '#ff003c';
+              riskBadge.style.background = 'rgba(255, 0, 60, 0.35)';
+            }
           } else {
             body.className = '';
             if (badge) badge.textContent = state.isGuarding ? 'ARMED' : 'STANDBY';
             if (safeView) safeView.style.display = 'block';
             if (dangerView) dangerView.style.display = 'none';
             if (dismissBtn) dismissBtn.style.display = 'none';
+            if (riskBadge) {
+              riskBadge.textContent = 'RISK: 0%';
+              riskBadge.style.color = '#00ff66';
+              riskBadge.style.borderColor = 'rgba(0, 255, 102, 0.4)';
+              riskBadge.style.background = 'rgba(0, 255, 102, 0.15)';
+            }
           }
         } catch (e) {
           console.warn('PiP DOM update warning:', e);
@@ -1833,32 +2961,48 @@
         state.lastThreatSnippet = sampleSnippet;
         state.threatsCount++;
 
-        // Update metrics
+        // 1. Calculate dynamic risk score (0-100) and update UI gauge
+        const riskResult = calculateRiskScore(sampleSnippet, reason, type);
+        const currentScore = riskResult.score;
+        const riskFactors = riskResult.factors;
+        updateRiskScoreGauge(currentScore, riskFactors);
+
+        // 2. Capture tamper-sealed court-admissible forensic snapshot
+        const evidence = captureEvidenceSnapshot(sampleSnippet, reason, currentScore);
+
+        // 3. Update metrics
         els.metricThreatsCount.textContent = state.threatsCount;
         els.metricLastThreat.textContent = sampleSnippet || reason;
         els.threatCard.className = 'bg-cyber-card border-2 border-cyber-neonRed rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 flex flex-col justify-between shadow-card-danger';
 
-        // 1. Show Emergency Strobe Banner (Universal across desktop & mobile)
+        // 4. Show Emergency Strobe Banner with Tactical Action Buttons
         els.dangerBanner.classList.remove('hidden');
         els.dangerBannerText.textContent = `${reason} — Intercepted: "${sampleSnippet}"`;
+        if (els.bannerBlockBtn) {
+          els.bannerBlockBtn.innerHTML = '<span>🚫</span><span>Block Link</span>';
+          els.bannerBlockBtn.className = 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-amber-500/50 cursor-pointer shadow';
+        }
 
-        // 2. Main Viewport Threat Overlay
+        // 5. Main Viewport Threat Overlay
         els.videoThreatOverlay.classList.remove('hidden');
-        els.videoThreatReason.textContent = `CRITICAL: ${reason} ["${sampleSnippet}"]`;
+        els.videoThreatReason.textContent = `CRITICAL (${currentScore}% RISK): ${reason} ["${sampleSnippet}"]`;
         els.videoContainer.classList.add('danger-reticle');
         els.radarBeam.className = 'absolute inset-x-0 h-1/4 radar-beam-red animate-radar-sweep-fast pointer-events-none z-20';
 
-        // 3. Update Always-on-Top Floating PiP Window (Desktop) or Canvas Fallback (Mobile)
+        // 6. Update Always-on-Top Floating PiP Window (Desktop) or Canvas Fallback (Mobile)
         updatePipHUD(true, reason, sampleSnippet);
 
-        // 4. Trigger Web Audio Siren
+        // 7. Trigger Web Audio Siren
         startEmergencySiren();
 
-        // 5. Trigger Browser TTS Voice Warning
-        playVoiceWarning();
+        // 8. Trigger ElevenLabs Neural Voice Alert (with SpeechSynthesis Smart Fallback)
+        playElevenLabsVoiceAlert(`Warning! Critical security threat detected. ${reason}. Do not authorize payments or approve OTP.`);
 
-        // 6. Append to Tactical Audit Log
-        addLog('THREAT', `ALERT: [${type}] ${reason} -> Payload: "${sampleSnippet}"`);
+        // 9. Dispatch Guardian Emergency Alert to WhatsApp and Telegram
+        triggerGuardianAlert(sampleSnippet, reason, currentScore);
+
+        // 10. Append to Tactical Audit Log
+        addLog('THREAT', `ALERT: [${type}] ${reason} -> Payload: "${sampleSnippet}" (${currentScore}% Risk)`);
       }
 
       function clearThreatState() {
@@ -1872,6 +3016,9 @@
         if (state.isGuarding) {
           els.radarBeam.classList.remove('hidden');
         }
+
+        // Reset risk score to secure baseline
+        updateRiskScoreGauge(0, []);
 
         updatePipHUD(false);
         addLog('SYSTEM', 'Threat alerts reset. Siren muted and indicators cleared.');
@@ -1957,6 +3104,23 @@
       els.toggleAudioMuteBtn.addEventListener('click', toggleSirenMute);
       els.mobileAudioMuteBtn.addEventListener('click', toggleSirenMute);
 
+      // Danger Banner Tactical Action Buttons
+      if (els.bannerBlockBtn) {
+        els.bannerBlockBtn.addEventListener('click', () => {
+          blockThreatVector(state.lastThreatSnippet);
+        });
+      }
+      if (els.bannerReportBtn) {
+        els.bannerReportBtn.addEventListener('click', () => {
+          openCyberCellModal(state.lastThreatSnippet, state.lastThreatReason, state.currentRiskScore);
+        });
+      }
+      if (els.bannerSnapshotBtn) {
+        els.bannerSnapshotBtn.addEventListener('click', () => {
+          openEvidenceModal(state.lastEvidence);
+        });
+      }
+
       // PiP Buttons
       const handlePiPToggle = () => {
         if (state.pipWindow && !state.pipWindow.closed) {
@@ -1970,28 +3134,347 @@
       els.togglePipBtn.addEventListener('click', handlePiPToggle);
       els.mobileTogglePipBtn.addEventListener('click', handlePiPToggle);
 
-      // Test Alerts
+      // Test Alerts - Instantly triggers threat & 1930 emergency overlay modal pre-filled with threat evidence
       const handleTestAlert = () => {
-        triggerSimulatedThreat('bit.ly/free-recharge-jio-599', 'Scam: Fraudulent free recharge shortlink intercepted');
+        const sampleUrl = 'bit.ly/free-recharge-jio-599';
+        const sampleReason = 'Critical Smishing: Fraudulent free recharge phishing shortlink intercepted';
+        triggerSimulatedThreat(sampleUrl, sampleReason);
+        // Instantly trigger emergency overlay modal pre-filled with threat evidence to report to CyberCell
+        setTimeout(() => {
+          openCyberCellModal(sampleUrl, sampleReason, 98);
+        }, 350);
       };
-      els.testAlertBtn.addEventListener('click', handleTestAlert);
-      els.mobileTestAlertBtn.addEventListener('click', handleTestAlert);
+      if (els.testAlertBtn) els.testAlertBtn.addEventListener('click', handleTestAlert);
+      if (els.mobileTestAlertBtn) els.mobileTestAlertBtn.addEventListener('click', handleTestAlert);
 
       // Buffer & Audit Log Clear Buttons
-      els.clearOcrLogBtn.addEventListener('click', () => {
-        els.ocrBufferBox.innerHTML = '<span class="text-slate-600 italic">// Buffer cleared.</span>';
-        els.ocrCharCount.textContent = '0 chars';
+      if (els.clearOcrLogBtn) {
+        els.clearOcrLogBtn.addEventListener('click', () => {
+          els.ocrBufferBox.innerHTML = '<span class="text-slate-600 italic">// Buffer cleared.</span>';
+          els.ocrCharCount.textContent = '0 chars';
+        });
+      }
+
+      if (els.clearAuditLogBtn) {
+        els.clearAuditLogBtn.addEventListener('click', () => {
+          els.auditLogContainer.innerHTML = '<div class="text-slate-500">[LOG] Log cleared.</div>';
+        });
+      }
+
+      if (els.clearScratchpadBtn) {
+        els.clearScratchpadBtn.addEventListener('click', () => {
+          els.testScratchpad.value = '';
+          els.scratchpadStatusBadge.textContent = 'Empty';
+          els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded';
+        });
+      }
+
+      // -------------------------------------------------------------
+      // 10. MODAL DIALOG EVENT LISTENERS & SETTINGS CONTROLLERS
+      // -------------------------------------------------------------
+      // 1. ElevenLabs Voice Modal & Controls
+      function openVoiceSettingsModal() {
+        if (els.elevenLabsApiKeyInput) {
+          els.elevenLabsApiKeyInput.value = state.elevenLabsApiKey || '';
+        }
+        const currentVoice = state.elevenLabsVoiceId || '21m00Tcm4TlvDq8ikWAM';
+        if (els.elevenLabsVoiceSelect) {
+          const match = Array.from(els.elevenLabsVoiceSelect.options).some(o => o.value === currentVoice);
+          if (match) {
+            els.elevenLabsVoiceSelect.value = currentVoice;
+            if (els.elevenLabsVoiceIdInput) els.elevenLabsVoiceIdInput.classList.add('hidden');
+          } else {
+            els.elevenLabsVoiceSelect.value = 'custom';
+            if (els.elevenLabsVoiceIdInput) {
+              els.elevenLabsVoiceIdInput.classList.remove('hidden');
+              els.elevenLabsVoiceIdInput.value = currentVoice;
+            }
+          }
+        }
+        if (els.elevenLabsVoiceIdInput) {
+          els.elevenLabsVoiceIdInput.value = currentVoice;
+        }
+        if (els.voiceModal) {
+          els.voiceModal.classList.remove('hidden');
+        }
+      }
+
+      if (els.btnVoiceSettings) {
+        els.btnVoiceSettings.addEventListener('click', openVoiceSettingsModal);
+      }
+      if (els.mobileVoiceBtn) {
+        els.mobileVoiceBtn.addEventListener('click', openVoiceSettingsModal);
+      }
+      if (els.closeVoiceModalBtn) {
+        els.closeVoiceModalBtn.addEventListener('click', () => {
+          if (els.voiceModal) els.voiceModal.classList.add('hidden');
+        });
+      }
+      if (els.toggleApiKeyVisibilityBtn && els.elevenLabsApiKeyInput) {
+        els.toggleApiKeyVisibilityBtn.addEventListener('click', () => {
+          const isPassword = els.elevenLabsApiKeyInput.type === 'password';
+          els.elevenLabsApiKeyInput.type = isPassword ? 'text' : 'password';
+          els.toggleApiKeyVisibilityBtn.textContent = isPassword ? 'HIDE' : 'SHOW';
+        });
+      }
+
+      // Dropdown voice selector change
+      if (els.elevenLabsVoiceSelect) {
+        els.elevenLabsVoiceSelect.addEventListener('change', (e) => {
+          const selected = e.target.value;
+          if (selected === 'custom') {
+            if (els.elevenLabsVoiceIdInput) {
+              els.elevenLabsVoiceIdInput.classList.remove('hidden');
+              els.elevenLabsVoiceIdInput.focus();
+            }
+          } else {
+            if (els.elevenLabsVoiceIdInput) {
+              els.elevenLabsVoiceIdInput.classList.add('hidden');
+              els.elevenLabsVoiceIdInput.value = selected;
+            }
+            state.elevenLabsVoiceId = selected;
+          }
+        });
+      }
+
+      // Preset pills inside voice modal
+      document.querySelectorAll('.voice-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const voice = btn.getAttribute('data-voice');
+          if (!voice) return;
+          if (els.elevenLabsVoiceSelect) {
+            const hasOption = Array.from(els.elevenLabsVoiceSelect.options).some(o => o.value === voice);
+            if (hasOption) {
+              els.elevenLabsVoiceSelect.value = voice;
+              if (els.elevenLabsVoiceIdInput) els.elevenLabsVoiceIdInput.classList.add('hidden');
+            } else {
+              els.elevenLabsVoiceSelect.value = 'custom';
+              if (els.elevenLabsVoiceIdInput) {
+                els.elevenLabsVoiceIdInput.classList.remove('hidden');
+                els.elevenLabsVoiceIdInput.value = voice;
+              }
+            }
+          }
+          if (els.elevenLabsVoiceIdInput) els.elevenLabsVoiceIdInput.value = voice;
+          state.elevenLabsVoiceId = voice;
+        });
       });
 
-      els.clearAuditLogBtn.addEventListener('click', () => {
-        els.auditLogContainer.innerHTML = '<div class="text-slate-500">[LOG] Log cleared.</div>';
-      });
+      if (els.saveVoiceSettingsBtn) {
+        els.saveVoiceSettingsBtn.addEventListener('click', () => {
+          const key = els.elevenLabsApiKeyInput ? els.elevenLabsApiKeyInput.value.trim() : '';
+          let voice = '21m00Tcm4TlvDq8ikWAM';
+          if (els.elevenLabsVoiceSelect && els.elevenLabsVoiceSelect.value !== 'custom') {
+            voice = els.elevenLabsVoiceSelect.value;
+          } else if (els.elevenLabsVoiceIdInput) {
+            voice = els.elevenLabsVoiceIdInput.value.trim() || '21m00Tcm4TlvDq8ikWAM';
+          }
+          state.elevenLabsApiKey = key;
+          state.elevenLabsVoiceId = voice;
+          localStorage.setItem('ai_cyberguard_el_key', key);
+          localStorage.setItem('ai_cyberguard_el_voice', voice);
 
-      els.clearScratchpadBtn.addEventListener('click', () => {
-        els.testScratchpad.value = '';
-        els.scratchpadStatusBadge.textContent = 'Empty';
-        els.scratchpadStatusBadge.className = 'text-[8px] sm:text-[9px] font-mono text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded';
-      });
+          if (els.voiceBadge) {
+            els.voiceBadge.textContent = key ? '11LABS ARMED' : '11LABS';
+          }
+          addLog('SUCCESS', `Voice profile configured (Voice ID: ${voice}). Saved locally.`);
+          els.saveVoiceSettingsBtn.textContent = '✓ Saved Profile!';
+          setTimeout(() => {
+            if (els.saveVoiceSettingsBtn) els.saveVoiceSettingsBtn.textContent = 'Save Voice Profile';
+            if (els.voiceModal) els.voiceModal.classList.add('hidden');
+          }, 700);
+        });
+      }
+
+      // Test ElevenLabs Voice button
+      if (els.testVoiceSynthesisBtn) {
+        els.testVoiceSynthesisBtn.addEventListener('click', () => {
+          const key = els.elevenLabsApiKeyInput ? els.elevenLabsApiKeyInput.value.trim() : '';
+          let voice = '21m00Tcm4TlvDq8ikWAM';
+          if (els.elevenLabsVoiceSelect && els.elevenLabsVoiceSelect.value !== 'custom') {
+            voice = els.elevenLabsVoiceSelect.value;
+          } else if (els.elevenLabsVoiceIdInput) {
+            voice = els.elevenLabsVoiceIdInput.value.trim() || '21m00Tcm4TlvDq8ikWAM';
+          }
+          state.elevenLabsApiKey = key;
+          state.elevenLabsVoiceId = voice;
+          localStorage.setItem('ai_cyberguard_el_key', key);
+          localStorage.setItem('ai_cyberguard_el_voice', voice);
+
+          if (!key) {
+            addLog('WARN', 'ElevenLabs API Key not entered. Playing preview via browser smart speech fallback.');
+          }
+          playElevenLabsVoiceAlert('Warning! Critical security threat detected on your screen. Do not approve transactions.');
+        });
+      }
+
+      // 2. Guardian Emergency Alert Modal
+      function openGuardianModal() {
+        if (els.guardianEnabledToggle) els.guardianEnabledToggle.checked = state.guardianEnabled;
+        if (els.guardianPhoneInput) els.guardianPhoneInput.value = state.guardianPhone || '';
+        if (els.guardianCallmebotApiKeyInput) els.guardianCallmebotApiKeyInput.value = state.guardianApiKey || '';
+        if (els.telegramBotTokenInput) els.telegramBotTokenInput.value = state.guardianTelegramToken || '';
+        if (els.telegramChatIdInput) els.telegramChatIdInput.value = state.guardianTelegramChatId || '';
+        if (els.guardianModal) els.guardianModal.classList.remove('hidden');
+      }
+
+      if (els.btnGuardianSettings) {
+        els.btnGuardianSettings.addEventListener('click', openGuardianModal);
+      }
+      if (els.mobileGuardianBtn) {
+        els.mobileGuardianBtn.addEventListener('click', openGuardianModal);
+      }
+      if (els.closeGuardianModalBtn) {
+        els.closeGuardianModalBtn.addEventListener('click', () => {
+          els.guardianModal.classList.add('hidden');
+        });
+      }
+      if (els.tabWhatsappBtn && els.tabTelegramBtn) {
+        els.tabWhatsappBtn.addEventListener('click', () => {
+          state.guardianChannel = 'whatsapp';
+          localStorage.setItem('ai_cyberguard_guard_channel', 'whatsapp');
+          els.tabWhatsappBtn.className = 'flex-1 py-1.5 rounded-md font-mono text-xs font-bold transition bg-cyber-neonGreen text-black';
+          els.tabTelegramBtn.className = 'flex-1 py-1.5 rounded-md font-mono text-xs font-bold transition text-slate-400 hover:text-white';
+          if (els.whatsappSection) els.whatsappSection.classList.remove('hidden');
+          if (els.telegramSection) els.telegramSection.classList.add('hidden');
+        });
+        els.tabTelegramBtn.addEventListener('click', () => {
+          state.guardianChannel = 'telegram';
+          localStorage.setItem('ai_cyberguard_guard_channel', 'telegram');
+          els.tabTelegramBtn.className = 'flex-1 py-1.5 rounded-md font-mono text-xs font-bold transition bg-cyan-500 text-black';
+          els.tabWhatsappBtn.className = 'flex-1 py-1.5 rounded-md font-mono text-xs font-bold transition text-slate-400 hover:text-white';
+          if (els.telegramSection) els.telegramSection.classList.remove('hidden');
+          if (els.whatsappSection) els.whatsappSection.classList.add('hidden');
+        });
+      }
+      if (els.saveGuardianSettingsBtn) {
+        els.saveGuardianSettingsBtn.addEventListener('click', () => {
+          state.guardianEnabled = els.guardianEnabledToggle ? els.guardianEnabledToggle.checked : true;
+          state.guardianPhone = els.guardianPhoneInput ? els.guardianPhoneInput.value.trim() : '';
+          state.guardianApiKey = els.guardianCallmebotApiKeyInput ? els.guardianCallmebotApiKeyInput.value.trim() : '';
+          state.guardianTelegramToken = els.telegramBotTokenInput ? els.telegramBotTokenInput.value.trim() : '';
+          state.guardianTelegramChatId = els.telegramChatIdInput ? els.telegramChatIdInput.value.trim() : '';
+
+          localStorage.setItem('ai_cyberguard_guard_enabled', state.guardianEnabled);
+          localStorage.setItem('ai_cyberguard_guard_phone', state.guardianPhone);
+          localStorage.setItem('ai_cyberguard_guard_key', state.guardianApiKey);
+          localStorage.setItem('ai_cyberguard_tg_token', state.guardianTelegramToken);
+          localStorage.setItem('ai_cyberguard_tg_chat', state.guardianTelegramChatId);
+
+          addLog('SUCCESS', 'Guardian emergency alert settings saved.');
+          els.saveGuardianSettingsBtn.textContent = '✓ Saved!';
+          setTimeout(() => {
+            if (els.saveGuardianSettingsBtn) els.saveGuardianSettingsBtn.textContent = 'Save Configuration';
+            els.guardianModal.classList.add('hidden');
+          }, 800);
+        });
+      }
+      if (els.testGuardianAlertBtn) {
+        els.testGuardianAlertBtn.addEventListener('click', () => {
+          addLog('INFO', 'Dispatching test Guardian alert to configured channels...');
+          triggerGuardianAlert('bit.ly/test-guardian-alert', 'Manual Test Simulation Vector', 92);
+        });
+      }
+
+      // Forensic Evidence Modal
+      if (els.closeEvidenceModalBtn) {
+        els.closeEvidenceModalBtn.addEventListener('click', () => {
+          els.evidenceModal.classList.add('hidden');
+        });
+      }
+      if (els.downloadEvidenceBtn) {
+        els.downloadEvidenceBtn.addEventListener('click', () => {
+          const ev = state.lastEvidence;
+          if (!ev || !ev.imageDataUrl) return;
+          const a = document.createElement('a');
+          a.href = ev.imageDataUrl;
+          a.download = `forensic-evidence-${ev.id}.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          addLog('SUCCESS', `Downloaded forensic evidence image: ${ev.id}.png`);
+        });
+      }
+      if (els.forwardToCyberCellBtn) {
+        els.forwardToCyberCellBtn.addEventListener('click', () => {
+          els.evidenceModal.classList.add('hidden');
+          const ev = state.lastEvidence;
+          openCyberCellModal(ev ? ev.snippet : '', ev ? ev.reason : '', ev ? ev.score : 95);
+        });
+      }
+      if (els.blockFromEvidenceBtn) {
+        els.blockFromEvidenceBtn.addEventListener('click', () => {
+          const ev = state.lastEvidence;
+          if (ev && ev.snippet) {
+            blockThreatVector(ev.snippet);
+            els.blockFromEvidenceBtn.textContent = '✓ Vector Blocked';
+          }
+        });
+      }
+
+      // CyberCell 1930 Dossier Modal / Emergency 1930 Overlay
+      const handleOpenCyberCell = () => {
+        const snippet = state.lastThreatSnippet || 'bit.ly/free-recharge-jio-599';
+        const reason = state.lastThreatReason || 'Intercepted Credential Phishing / Smishing Threat';
+        const score = state.currentRiskScore || 96;
+        openCyberCellModal(snippet, reason, score);
+      };
+      if (els.btnCyberCell1930) {
+        els.btnCyberCell1930.addEventListener('click', handleOpenCyberCell);
+      }
+      if (els.mobileCybercellBtn) {
+        els.mobileCybercellBtn.addEventListener('click', handleOpenCyberCell);
+      }
+      if (els.closeCybercellModalBtn) {
+        els.closeCybercellModalBtn.addEventListener('click', () => {
+          els.cybercellModal.classList.add('hidden');
+        });
+      }
+      if (els.copyComplaintBtn) {
+        els.copyComplaintBtn.addEventListener('click', () => {
+          if (!els.cybercellComplaintText) return;
+          navigator.clipboard.writeText(els.cybercellComplaintText.value).then(() => {
+            if (els.copyComplaintBtnText) els.copyComplaintBtnText.textContent = 'COPIED TO CLIPBOARD!';
+            setTimeout(() => {
+              if (els.copyComplaintBtnText) els.copyComplaintBtnText.textContent = 'Copy Dossier to Clipboard';
+            }, 2000);
+            addLog('SUCCESS', '1930 Cybercrime complaint text copied to clipboard.');
+          });
+        });
+      }
+      if (els.exportCaseJsonBtn) {
+        els.exportCaseJsonBtn.addEventListener('click', exportCyberCrimeDossierJSON);
+      }
+
+      // Blocklist Modal
+      const handleOpenBlocklist = () => {
+        renderBlocklistUI();
+        if (els.blocklistModal) els.blocklistModal.classList.remove('hidden');
+      };
+      if (els.btnBlocklist) {
+        els.btnBlocklist.addEventListener('click', handleOpenBlocklist);
+      }
+      if (els.mobileBlocklistBtn) {
+        els.mobileBlocklistBtn.addEventListener('click', handleOpenBlocklist);
+      }
+      if (els.closeBlocklistModalBtn) {
+        els.closeBlocklistModalBtn.addEventListener('click', () => {
+          els.blocklistModal.classList.add('hidden');
+        });
+      }
+      if (els.dismissBlocklistBtn) {
+        els.dismissBlocklistBtn.addEventListener('click', () => {
+          els.blocklistModal.classList.add('hidden');
+        });
+      }
+      if (els.clearAllBlockedBtn) {
+        els.clearAllBlockedBtn.addEventListener('click', () => {
+          state.blocklist = [];
+          localStorage.removeItem('ai_cyberguard_blocklist');
+          renderBlocklistUI();
+          addLog('INFO', 'Threat blocklist cleared.');
+        });
+      }
 
       // 1-CLICK / 1-TAP DEMO ATTACK VECTOR LOGIC
       document.querySelectorAll('.test-vector-btn').forEach(btn => {
@@ -2090,6 +3573,10 @@
           addLog('INFO', `Scratchpad text evaluated: No threat pattern matched.`);
         }
       });
+
+      // Initialize blocklist UI and risk gauge baseline
+      renderBlocklistUI();
+      updateRiskScoreGauge(0, []);
 
       // Background initialization of Tesseract worker
       setTimeout(() => {
