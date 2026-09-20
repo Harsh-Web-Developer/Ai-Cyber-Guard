@@ -1,6 +1,6 @@
 {
-  "name": "AI CyberGuard - Team Syntax Squad",
-  "description": "High-resolution full-screen OCR threat detection by Team Syntax Squad. Features Document Picture-in-Picture always-on-top alert overlay, Web Audio siren, text-to-speech voice warnings, and 100% client-side security scanning.",
+  "name": "GuardBot AI - AI CyberGuard Threat Shield",
+  "description": "GuardBot AI / AI CyberGuard threat shield with 3x high-precision Otsu-binarized OCR, audio ducking and balanced siren mixing, Document Picture-in-Picture HUD, dynamic ElevenLabs neural voice alerts, zero-setup Guardian WhatsApp/Email alerts, Sticky Judge Demo bar, and interactive CyberCell 1930 incident reporting.",
   "requestFramePermissions": ["display-capture", "camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
