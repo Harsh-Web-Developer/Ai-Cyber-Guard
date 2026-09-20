@@ -210,13 +210,15 @@
         </div>
       </div>
       <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-auto w-full sm:w-auto justify-end flex-wrap">
+        <!-- Prominent Report Incident Button in Emergency Banner -->
+        <button id="bannerExternalReportBtn" type="button" class="bg-gradient-to-r from-red-600 via-cyber-neonRed to-rose-600 hover:from-red-500 hover:to-rose-500 text-white px-3 py-1.5 rounded-lg text-xs font-mono font-black transition flex items-center gap-1.5 border-2 border-white shadow-glow-red cursor-pointer" title="Open Official Incident Report Form (cybercrime.gov.in)">
+          <span class="text-sm">🚨</span>
+          <span>Report Incident (CyberCell 1930)</span>
+          <span>↗</span>
+        </button>
         <button id="bannerBlockBtn" class="bg-black/90 hover:bg-black text-amber-300 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-amber-400/50 shadow cursor-pointer" title="Block this scam link immediately">
           <span>🚫</span>
           <span>Block Link</span>
-        </button>
-        <button id="bannerReportBtn" class="bg-red-950/90 hover:bg-red-900 text-white px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-white/40 shadow cursor-pointer" title="Report to CyberCell 1930">
-          <span>🚨</span>
-          <span>1930</span>
         </button>
         <button id="bannerSnapshotBtn" class="bg-black/90 hover:bg-black text-cyan-300 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold transition flex items-center gap-1 border border-cyan-400/50 shadow cursor-pointer" title="View Captured Evidence Snapshot">
           <span>📷</span>
@@ -278,11 +280,43 @@
     <!-- TOP HEADER -->
     <header class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-cyber-border">
       <div class="flex items-center gap-3">
-        <!-- Glowing Tactical Hexagon Icon -->
-        <div class="h-11 w-11 sm:h-14 sm:w-14 p-2 rounded-2xl bg-gradient-to-br from-cyber-card via-black to-cyber-card border-2 border-cyber-neonGreen/70 shadow-glow-green flex items-center justify-center relative shrink-0">
+        <!-- Glowing Cyber Shield with AI Eye SVG Logo -->
+        <div class="h-12 w-12 sm:h-14 sm:w-14 p-1 rounded-2xl bg-gradient-to-br from-[#020617] via-[#09132b] to-[#020617] border-2 border-cyber-neonGreen/80 shadow-glow-green flex items-center justify-center relative shrink-0 overflow-hidden group">
           <div class="absolute inset-0 rounded-2xl bg-cyber-neonGreen/10 animate-pulse"></div>
-          <svg class="w-6 h-6 sm:w-8 sm:h-8 text-cyber-neonGreen relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          <svg class="w-9 h-9 sm:w-11 sm:h-11 relative z-10 filter drop-shadow-[0_0_8px_rgba(0,255,102,0.6)]" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="shieldGrad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00ff66"/>
+                <stop offset="50%" stop-color="#00f0ff"/>
+                <stop offset="100%" stop-color="#ff003c"/>
+              </linearGradient>
+              <radialGradient id="eyeIris" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="45%" stop-color="#00f0ff"/>
+                <stop offset="85%" stop-color="#00ff66"/>
+                <stop offset="100%" stop-color="#020617"/>
+              </radialGradient>
+            </defs>
+            <!-- Cyber Shield Outer Contour -->
+            <path d="M24 3L42 9.5V23C42 33.5 34.2 42.2 24 45C13.8 42.2 6 33.5 6 23V9.5L24 3Z" fill="#020617" stroke="url(#shieldGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Cyber Grid Inner Circuit Lines -->
+            <path d="M24 8L37 12.8V22.5C37 30.5 31.5 37.8 24 40.5C16.5 37.8 11 30.5 11 22.5V12.8L24 8Z" stroke="#1e293b" stroke-width="1.2" stroke-dasharray="3 2"/>
+            <!-- Circuit Nodes -->
+            <circle cx="24" cy="8" r="1.5" fill="#00ff66"/>
+            <circle cx="37" cy="13" r="1.5" fill="#00f0ff"/>
+            <circle cx="11" cy="13" r="1.5" fill="#00f0ff"/>
+            <!-- AI Eye Outer Reticle Ring -->
+            <circle cx="24" cy="24" r="9.5" stroke="#00ff66" stroke-width="1.4" stroke-dasharray="7 3.5" opacity="0.9"/>
+            <circle cx="24" cy="24" r="6.5" stroke="#00f0ff" stroke-width="1.1" opacity="0.95"/>
+            <!-- Glowing AI Pupil & Iris -->
+            <circle cx="24" cy="24" r="4" fill="url(#eyeIris)"/>
+            <circle cx="24" cy="24" r="1.8" fill="#020617"/>
+            <circle cx="25" cy="23" r="0.7" fill="#ffffff"/>
+            <!-- Targeting Crosshairs / Optic Scanner Ray -->
+            <line x1="12" y1="24" x2="15" y2="24" stroke="#ff003c" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="33" y1="24" x2="36" y2="24" stroke="#ff003c" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="24" y1="12" x2="24" y2="15" stroke="#00ff66" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="24" y1="33" x2="24" y2="36" stroke="#00ff66" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
         </div>
 
@@ -293,13 +327,20 @@
             <span id="platformPill" class="bg-cyan-500/15 border border-cyan-500/50 text-cyan-300 text-[10px] sm:text-xs font-mono font-black px-2 py-0.5 rounded uppercase">UNIVERSAL</span>
           </div>
           <p class="text-[11px] sm:text-xs md:text-sm text-slate-400 mt-0.5 font-mono line-clamp-1 sm:line-clamp-none">
-            Zero-API Threat Shield &bull; 2x High-Precision OCR &bull; Dynamic Neural Audio &bull; Dual Siren &bull; Incident Engine
+            Zero-API Threat Shield &bull; Ultra-Fast &lt;500ms OCR &bull; Dynamic Neural Audio &bull; Dual Siren &bull; Incident Engine
           </p>
         </div>
       </div>
 
       <!-- Quick Action Header Buttons (Desktop / Tablet) -->
       <div class="hidden sm:flex items-center gap-2 flex-wrap w-full md:w-auto justify-end">
+        <!-- PROMINENT EXTERNAL FORM REPORT BUTTON -->
+        <button id="headerExternalReportBtn" type="button" class="bg-gradient-to-r from-red-600 via-cyber-neonRed to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-tech font-black text-xs sm:text-sm px-3.5 py-2 rounded-xl border-2 border-red-300/80 shadow-glow-red flex items-center gap-2 cursor-pointer transform active:scale-95 transition whitespace-nowrap animate-pulse" title="Open Official Cyber Incident Report Form in New Tab (cybercrime.gov.in / 1930 Helpline)">
+          <span class="text-sm">🚨</span>
+          <span>REPORT INCIDENT (CYBERCELL 1930)</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </button>
+
         <!-- 1. ELEVENLABS AI VOICE CONFIG -->
         <button id="openVoiceModalBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-purple-500/60 hover:border-purple-400 text-purple-300 hover:text-white text-xs font-mono font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer active:scale-95" title="Configure ElevenLabs Cinematic AI Voice Alerts">
           <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
@@ -317,7 +358,7 @@
         <!-- 3. INTERACTIVE CYBERCELL 1930 INCIDENT REPORTING FORM -->
         <button id="openIncidentModalBtn" class="bg-cyber-card hover:bg-cyber-cardHover border-2 border-red-500/70 hover:border-red-400 text-red-300 hover:text-white text-xs font-mono font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm cursor-pointer active:scale-95" title="Open Interactive Incident Reporting Form Engine">
           <span class="text-red-400">📝</span>
-          <span>REPORT INCIDENT</span>
+          <span>DOCKET</span>
           <span class="bg-red-500/20 text-red-300 text-[9px] px-1.5 py-0.2 rounded border border-red-500/40 font-bold">1930</span>
         </button>
 
@@ -326,11 +367,6 @@
           <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
           <span>BLOCKLIST</span>
           <span id="blocklistCountBadge" class="bg-amber-500/20 text-amber-300 text-[9px] px-1.5 py-0.2 rounded font-bold">0</span>
-        </button>
-
-        <button id="openCyberCellBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-red-500/50 hover:border-red-400 text-red-300 hover:text-white text-xs font-mono font-bold px-2.5 py-2 rounded-xl transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-sm" title="Report Scam to National Cyber Crime Portal 1930">
-          <span class="text-red-400">🚨</span>
-          <span>1930 OVERLAY</span>
         </button>
 
         <!-- 5. TEST THREAT ALERT BUTTON -->
@@ -353,22 +389,25 @@
       </div>
 
       <!-- Quick Action Mobile Strip (Visible on mobile screens) -->
-      <div class="flex sm:hidden items-center gap-1.5 flex-wrap w-full mt-2 pt-2 border-t border-cyber-border/40">
-        <button id="mobileVoiceBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-purple-500/60 text-purple-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="ElevenLabs Voice">
-          <span>🎙️</span><span>VOICE</span>
+      <div class="flex sm:hidden flex-col gap-2 w-full mt-2 pt-2 border-t border-cyber-border/40">
+        <!-- Prominent Mobile External Incident Report Button -->
+        <button id="mobileExternalReportBtn" type="button" class="w-full bg-gradient-to-r from-red-600 via-cyber-neonRed to-rose-600 text-white text-xs font-mono font-black py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-glow-red active:scale-95" title="Report Incident to CyberCell 1930">
+          <span>🚨</span><span>REPORT INCIDENT (CYBERCELL 1930)</span><span>↗</span>
         </button>
-        <button id="mobileGuardianBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-cyber-neonGreen/60 text-cyber-neonGreen text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Guardian Alert">
-          <span>🛡️</span><span>ALERT</span>
-        </button>
-        <button id="mobileIncidentBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-red-500/60 text-red-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Report Incident Form">
-          <span>📝</span><span>REPORT</span>
-        </button>
-        <button id="mobileBlocklistBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-amber-500/60 text-amber-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Blocklist">
-          <span>🚫</span><span>BLOCKED</span>
-        </button>
-        <button id="mobileCybercellBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-red-500/60 text-red-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="1930 Overlay">
-          <span>🚨</span><span>1930</span>
-        </button>
+        <div class="flex items-center gap-1.5 flex-wrap w-full">
+          <button id="mobileVoiceBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-purple-500/60 text-purple-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="ElevenLabs Voice">
+            <span>🎙️</span><span>VOICE</span>
+          </button>
+          <button id="mobileGuardianBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-cyber-neonGreen/60 text-cyber-neonGreen text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Guardian Alert">
+            <span>🛡️</span><span>ALERT</span>
+          </button>
+          <button id="mobileIncidentBtn" class="flex-1 bg-cyber-card hover:bg-cyber-cardHover border border-red-500/60 text-red-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Report Incident Form">
+            <span>📝</span><span>DOCKET</span>
+          </button>
+          <button id="mobileBlocklistBtn" class="bg-cyber-card hover:bg-cyber-cardHover border border-amber-500/60 text-amber-300 text-[11px] font-mono font-bold py-1.5 px-2 rounded-lg flex items-center justify-center gap-1 cursor-pointer active:scale-95" title="Blocklist">
+            <span>🚫</span><span>BLOCKED</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -558,6 +597,17 @@
               <p id="videoThreatReason" class="text-[11px] sm:text-xs md:text-sm font-mono text-yellow-300 mt-1 max-w-lg font-bold bg-black/80 px-2.5 py-1 rounded-lg border border-yellow-300/50 line-clamp-2">
                 Suspicious vector identified by threat heuristics
               </p>
+              <!-- Threat Overlay Quick Action Buttons -->
+              <div class="flex items-center gap-2 mt-3 flex-wrap justify-center pointer-events-auto">
+                <button id="videoExternalReportBtn" type="button" class="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-tech font-black text-xs px-3.5 py-2 rounded-xl border border-white shadow-glow-red flex items-center gap-1.5 cursor-pointer transform active:scale-95 transition">
+                  <span class="text-sm">🚨</span>
+                  <span>REPORT INCIDENT (CYBERCELL 1930)</span>
+                  <span>↗</span>
+                </button>
+                <button id="videoDismissThreatBtn" type="button" class="bg-black/90 hover:bg-black text-slate-200 font-mono text-xs px-3 py-2 rounded-xl border border-white/40 cursor-pointer">
+                  Dismiss
+                </button>
+              </div>
             </div>
           </div>
 
@@ -2081,7 +2131,11 @@
         state.currentRiskScore = score;
 
         if (els.metricRiskScore) {
-          els.metricRiskScore.textContent = `${score}%`;
+          els.metricRiskScore.textContent = `${score} / 100`;
+        }
+
+        if (els.riskGaugeCenterText) {
+          els.riskGaugeCenterText.textContent = `${score}%`;
         }
 
         if (els.riskScoreProgressBar) {
@@ -2090,40 +2144,41 @@
 
         if (els.riskFactorCount) {
           els.riskFactorCount.textContent = factors.length > 0 
-            ? `${factors.length} Critical Vectors` 
-            : (score > 0 ? 'Threat Detected' : 'All Vectors Clear');
+            ? `${factors.length} Signal Vectors` 
+            : (score > 0 ? 'Threat Signal' : 'Zero Threat Signals');
         }
 
-        // Circular Gauge SVG stroke calculation (r = 18, circumference = ~113.1)
-        const circumference = 2 * Math.PI * 18; // 113.097
-        const offset = circumference - (score / 100) * circumference;
+        if (els.metricRiskAnalysis) {
+          els.metricRiskAnalysis.textContent = factors.length > 0 ? factors.join(', ') : (score > 0 ? 'Risk Alert' : 'Zero threat signals');
+        }
 
+        // Circular Gauge SVG stroke calculation (Perimeter of 15.9155 radius = 100)
         if (els.riskGaugeCircle) {
-          els.riskGaugeCircle.style.strokeDashoffset = offset;
+          els.riskGaugeCircle.setAttribute('stroke-dasharray', `${score}, 100`);
 
-          if (score >= 75) {
+          if (score >= 65) {
             els.riskGaugeCircle.setAttribute('stroke', '#ff003c');
             if (els.riskScoreProgressBar) els.riskScoreProgressBar.className = 'h-full bg-cyber-neonRed transition-all duration-500 shadow-glow-red';
-            if (els.metricRiskScore) els.metricRiskScore.className = 'text-base sm:text-lg font-tech font-black text-cyber-neonRed';
+            if (els.metricRiskScore) els.metricRiskScore.className = 'text-xl sm:text-2xl font-mono font-black text-cyber-neonRed';
             if (els.riskLevelBadge) {
-              els.riskLevelBadge.textContent = 'CRITICAL';
-              els.riskLevelBadge.className = 'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyber-neonRed/20 text-cyber-neonRed border border-cyber-neonRed/50';
+              els.riskLevelBadge.textContent = `${score}% CRITICAL`;
+              els.riskLevelBadge.className = 'text-[9px] font-mono font-black px-1.5 py-0.2 rounded bg-cyber-neonRed/20 text-cyber-neonRed border border-cyber-neonRed/50';
             }
-          } else if (score >= 35) {
+          } else if (score >= 25) {
             els.riskGaugeCircle.setAttribute('stroke', '#f59e0b');
             if (els.riskScoreProgressBar) els.riskScoreProgressBar.className = 'h-full bg-amber-400 transition-all duration-500';
-            if (els.metricRiskScore) els.metricRiskScore.className = 'text-base sm:text-lg font-tech font-black text-amber-400';
+            if (els.metricRiskScore) els.metricRiskScore.className = 'text-xl sm:text-2xl font-mono font-black text-amber-400';
             if (els.riskLevelBadge) {
-              els.riskLevelBadge.textContent = 'MODERATE';
-              els.riskLevelBadge.className = 'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/50';
+              els.riskLevelBadge.textContent = `${score}% ELEVATED`;
+              els.riskLevelBadge.className = 'text-[9px] font-mono font-black px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/50';
             }
           } else {
             els.riskGaugeCircle.setAttribute('stroke', '#00ff66');
             if (els.riskScoreProgressBar) els.riskScoreProgressBar.className = 'h-full bg-cyber-neonGreen transition-all duration-500';
-            if (els.metricRiskScore) els.metricRiskScore.className = 'text-base sm:text-lg font-tech font-black text-cyber-neonGreen';
+            if (els.metricRiskScore) els.metricRiskScore.className = 'text-xl sm:text-2xl font-mono font-black text-cyber-neonGreen';
             if (els.riskLevelBadge) {
-              els.riskLevelBadge.textContent = 'SECURE';
-              els.riskLevelBadge.className = 'text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyber-neonGreen/20 text-cyber-neonGreen border border-cyber-neonGreen/50';
+              els.riskLevelBadge.textContent = `${score}% SAFE`;
+              els.riskLevelBadge.className = 'text-[9px] font-mono font-black px-1.5 py-0.2 rounded bg-cyber-neonGreen/20 text-cyber-neonGreen border border-cyber-neonGreen/50';
             }
           }
         }
